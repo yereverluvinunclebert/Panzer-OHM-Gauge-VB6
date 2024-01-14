@@ -1,18 +1,18 @@
-# Panzer-CPU-Gauge-VB6
+# Panzer-OHM-Gauge-VB6
  
-  A FOSS CPU Gauge VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
+  A FOSS OHM Gauge VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
  
- My current VB6/RC6 PSD program being finished now, fundamentally complete, only awaiting addition of smooth rotation to the CPU pointer, the handling of the sampling interval, fixing the enabling of the glowing lamps, testing on Windows XP and Win7 32bit and some multi monitor checking, completion of the CHM help file and the creation of the setup.exe. I am working on integrating my native VB6 forms from other programs and code alongside the RC6 Cairo code. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
+ My current VB6/RC6 PSD program being finished now, fundamentally complete, only awaiting addition of smooth rotation to the temperature pointer, the handling of the sampling interval, fixing the enabling of the glowing lamps, testing on Windows XP and Win7 32bit and some multi monitor checking, completion of the CHM help file and the creation of the setup.exe. I am working on integrating my native VB6 forms from other programs and code alongside the RC6 Cairo code. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
 
  Why VB6? Well, with a 64 bit, modern-language improvement upgrade on the way with 100% compatible TwinBasic coupled with support for transparent PNGs via RC/Cairo, VB6 code has an amazing future.
 
 ![vb6-logo-350](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/39e2c93f-40a5-4c47-8c23-d8ce7c747b10)
 
  I created as a variation of the previous gauges I had previously created for the World of Tanks and War Thunder 
- communities. The Panzer CPU Gauge widget is an attractive dieselpunk VB6 widget for your desktop. 
+ communities. The Panzer OHM Gauge widget is an attractive dieselpunk VB6 widget for your desktop. 
  Functional and gorgeous at the same time. The graphics are my own, I took original inspiration from a clock face by Italo Fortana combining it with an aircraft gauge. It is all my code with some help from the chaps at VBForums (credits given). 
   
-The Panzer CPU Gauge VB6  is a useful utility displaying the CPU usage of all cores combined in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require.
+The Panzer OHM Gauge VB6  is a useful utility displaying the temperatures of all cores and components in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require.
  
 ![panzer-cpuphoto-1440x900](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/b9b4ef35-d007-48f7-9440-135a3f3ca092)
 
