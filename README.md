@@ -55,7 +55,7 @@ The Panzer OHM Gauge VB6  is a useful utility displaying the temperatures of all
  enhancements and contributions will be gratefully received if you choose to 
  contribute.
 
- ![security](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/41c785ea-43f9-4850-94f6-3cc5ab69d890)
+![security](https://github.com/yereverluvinunclebert/Panzer-OHM-Gauge-VB6/assets/2788342/3fc22b45-ca08-4c2b-98f1-8cce6e4003c6)
 
  BUILD: The program runs without any Microsoft plugins.
  
