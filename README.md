@@ -14,14 +14,13 @@
   
 The Panzer OHM Gauge VB6  is a useful utility displaying the temperatures of all cores and components in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require.
  
-![panzer-cpuphoto-1440x900](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/b9b4ef35-d007-48f7-9440-135a3f3ca092)
+![panzer-OHMphoto-1440x900](https://github.com/yereverluvinunclebert/Panzer-OHM-Gauge-VB6/assets/2788342/f44dea4e-ed05-44a4-8516-3c06eaa01068)
 
  This widget can be increased in size, animation speed can be changed, 
  opacity/transparency may be set as to the users discretion. The widget can 
  also be made to hide for a pre-determined period.
  
-![widgetOnWhite](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/79a2877e-6b3f-485d-9ae9-0196154ae7b7)
-
+![panzerOHMgauge](https://github.com/yereverluvinunclebert/Panzer-OHM-Gauge-VB6/assets/2788342/a2172003-befd-4ec3-a9f2-9f0ef69416d7)
 
  Right clicking will bring up a menu of options. Double-clicking on the widget will cause a personalised Windows application to 
  fire up. The first time you run it there will be no assigned function and so it 
@@ -30,8 +29,7 @@ The Panzer OHM Gauge VB6  is a useful utility displaying the temperatures of all
  windows. Mouse hover over the widget and press CTRL+mousewheel up/down to resize. It works well on Windows XP 
  to Windows 11.
  
-![panzergauge-help](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/d5aeb2f6-307e-42de-ac9f-6238e0aa18ba)
-
+![panzer-temperature-OHM-help](https://github.com/yereverluvinunclebert/Panzer-OHM-Gauge-VB6/assets/2788342/55c5a56f-2ba6-4dad-8649-d8a9314cc9d5)
  
  The Panzer CPU Gauge VB6 gauge is Beta-grade software, under development, not yet 
  ready to use on a production system - use at your own risk.
@@ -209,7 +207,7 @@ The Panzer OHM Gauge VB6  is a useful utility displaying the temperatures of all
  With regard to the commercial use of incorporated images, permission and a 
  licence would need to be obtained from the original owner and creator, ie. me.
  
-![about](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/31fdceed-a7fe-4b50-afe1-9a0bb7cf60f8)
+![about](https://github.com/yereverluvinunclebert/Panzer-OHM-Gauge-VB6/assets/2788342/e48a2165-efa1-44ae-a75a-46801ea461ab)
 
 ![Panzer-CPU-Gauge-onDesktop](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/f2e06e77-77ee-46fb-840d-e14f96b4e0a5)
 
