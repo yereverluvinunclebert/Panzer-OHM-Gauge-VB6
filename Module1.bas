@@ -293,13 +293,7 @@ Public PzGGaugeFunctions As String
 Public PzGSmoothSecondHand As String
 Public PzGSamplingInterval As String
 
-
-
-'Public PzGClockFaceSwitchPref As String
-'Public PzGMainGaugeTimeZone As String
-'Public PzGMainDaylightSaving As String
-'Public PzGSecondaryGaugeTimeZone As String
-'Public PzGSecondaryDaylightSaving As String
+Public PzGCurrentSensor As String
 
 ' config
 Public PzGEnableTooltips As String
@@ -440,7 +434,8 @@ Public tzDelta1 As Long
 
 Public msgBoxADynamicSizingFlg As Boolean
 
-
+Public gblSensorArray() As String
+Public gblSensorCount As Integer
 
 
 '---------------------------------------------------------------------------------------
@@ -2784,4 +2779,53 @@ ArrayString_Error:
 
      MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ArrayString of Module Module1"
 End Function
+
+
+' ----------------------------------------------------------------
+' Procedure Name: getGblSensorArray
+' Purpose: Obtains the names of all the Sensors from the system, maximum 30
+' Procedure Kind: sub
+' Procedure Access: public
+' Author: beededea
+' Date: 13/01/2024
+' ----------------------------------------------------------------
+Public Sub getgblSensorArray(ByRef thisArray() As String, ByRef gblSensorCount As Integer)
+    
+    Dim strComputer As String
+    Dim objSWbemLocator As Object
+    Dim objSWbemServices As Object
+    Dim colItems As Object
+    Dim objItem As Object
+    Dim thisSensorCount As Integer: thisSensorCount = 0
+    Dim I As Integer
+    
+    On Error GoTo getGblSensorArray_Error
+    
+    strComputer = "."  ' localhost
+    
+    Set objSWbemLocator = CreateObject("WbemScripting.SWbemLocator")
+    Set objSWbemServices = objSWbemLocator.ConnectServer(strComputer, "root\OpenHardwareMonitor")
+    Set colItems = objSWbemServices.ExecQuery("SELECT * FROM Sensor WHERE SensorType = 'Temperature'")
+
+    thisSensorCount = colItems.Count
+    
+    ReDim thisArray(thisSensorCount, 4) As String
+    For Each objItem In colItems
+        thisArray(I, 1) = objItem.Name
+        thisArray(I, 2) = objItem.Value
+        thisArray(I, 3) = objItem.Max
+        thisArray(I, 4) = objItem.Identifier
+        I = I + 1
+    Next
+          
+    gblSensorCount = thisSensorCount
+        
+    On Error GoTo 0
+    Exit Sub
+
+getGblSensorArray_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getGblSensorArray, line " & Erl & "."
+
+End Sub
 

@@ -9,7 +9,6 @@ DONE
 ' cpu percent extraction using API
 ' gauge digital displays
 ' pointer rotation
-' lamps added and lit at high CPU
 ' icons created and assigned to forms
 ' sizing control corrected
 ' help image
@@ -17,20 +16,28 @@ DONE
 ' menu text changed
 ' new sampling control
 ' colouring new control
-' html help and images updated
-' chm help built
-' test autostart
 ' initial github synch.
 ' readme.md created and updated with new images
+
+' sampling interval vars - done
+' sampling interval var validation - done
+' sampling interval var reading/writing - done
 
 ' -oOo-
 
 TODO
 
+' test .js code and extract the pertinent code that attaches to WMI and replicate
+' source 1  http://vbcity.com/forums/t/80011.aspx
+' source 2  https://www.vbforums.com/showthread.php?862851-Get-system-information-with-Windows-Management-Instrumentation-(WMI)-and-SWbemLocator
+' source 3  https://bytes.com/topic/net/answers/745202-cannot-create-activex-object-calling-wmi-vb-net
+
+' lamps added and lit at high temps
+' html help and images updated
+' chm help built
+' test autostart
+
 ' smooth pointer - flick/smooth
-' sampling interval vars - done
-' sampling interval var validation - done
-' sampling interval var reading/writing - done
 
 ' add second monitor - wip find cable!
 

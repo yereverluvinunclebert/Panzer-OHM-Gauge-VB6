@@ -346,15 +346,22 @@ End Sub
 ' Procedure : switchfacesbutton_mouseUp
 ' Author    : beededea
 ' Date      : 03/08/2023
-' Purpose   :
+' Purpose   : increment the Sensor number
 '---------------------------------------------------------------------------------------
 '
 Private Sub switchfacesbutton_mouseUp(ByRef Sender As Object)
     Dim fileToPlay As String: fileToPlay = vbNullString
+    Dim currSensorNo As Integer: currSensorNo = 0
+    
     On Error GoTo switchfacesbutton_mouseUp_Error
 
     Sender.Widget.Alpha = Val(PzGOpacity) / 100
     Sender.Widget.Refresh
+    
+    currSensorNo = overlayWidget.thisSensorNo
+    currSensorNo = currSensorNo + 1
+    If currSensorNo >= gblSensorCount - 1 Then currSensorNo = 0
+    overlayWidget.thisSensorNo = currSensorNo
         
     fileToPlay = "till.wav"
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
@@ -546,7 +553,7 @@ End Sub
 ' Purpose   : save the form x,y position when ever the gauge/form is dragged
 '---------------------------------------------------------------------------------------
 '
-Private Sub gaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef Y As Single)
+Private Sub gaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
     On Error GoTo gaugeForm_MouseUp_Error
     
     Call savePosition
@@ -571,8 +578,8 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub gaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef Y As Single)
-  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = Y 'just store the offsets when no button is down
+Private Sub gaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
+  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = y 'just store the offsets when no button is down
   
    On Error GoTo gaugeForm_MouseMove_Error
     
@@ -582,7 +589,7 @@ Private Sub gaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer,
     If Button = vbLeftButton And Not gaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
       FX = (x - x0) * gaugeForm.WidgetRoot.Zoom + gaugeForm.Left
-      FY = (Y - y0) * gaugeForm.WidgetRoot.Zoom + gaugeForm.Top
+      FY = (y - y0) * gaugeForm.WidgetRoot.Zoom + gaugeForm.Top
       gaugeForm.Move FX, FY
     End If
 
@@ -681,7 +688,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub gaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef Y As Single)
+Private Sub gaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then

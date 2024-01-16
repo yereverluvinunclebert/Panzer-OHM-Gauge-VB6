@@ -6,7 +6,7 @@ Option Explicit
 
 '------------------------------------------------------ STARTS
 ' for SetWindowPos z-ordering
-Public Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Public Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Public Const HWND_TOP As Long = 0 ' for SetWindowPos z-ordering
 Public Const HWND_TOPMOST As Long = -1
@@ -141,6 +141,9 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     
     ' place the form at the saved location
     Call makeVisibleFormElements
+    
+    ' get the list of sensors and the count
+    Call getgblSensorArray(gblSensorArray(), gblSensorCount)
     
     ' run the functions that are also called at reload time.
     Call adjustMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
@@ -422,12 +425,7 @@ Public Sub adjustMainControls()
     
 '    overlayWidget.ZoomDirection = PzGScrollWheelDirection
 
-'PzGClockFaceSwitchPref
-'PzGMainGaugeTimeZone
-'PzGMainDaylightSaving
-'PzGSecondaryGaugeTimeZone
-'PzGSecondaryDaylightSaving
-    
+  
     If PzGGaugeFunctions = "1" Then
         overlayWidget.Ticking = True
         menuForm.mnuSwitchOff.Checked = False
@@ -521,6 +519,10 @@ Public Sub adjustMainControls()
         fAlpha.gaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     End If
 
+    'If PzGCurrentSensor <> "" Then overlayWidget.thisSensor = PzGCurrentSensor
+    'PzGCurrentSensor = "0"
+    
+    overlayWidget.thisSensorNo = Val(PzGCurrentSensor)
     overlayWidget.thisOpacity = Val(PzGOpacity)
     overlayWidget.samplingInterval = Val(PzGSamplingInterval)
     
@@ -588,12 +590,9 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGGaugeFunctions = fGetINISetting(location, "gaugeFunctions", PzGSettingsFile)
         PzGSmoothSecondHand = fGetINISetting(location, "smoothSecondHand", PzGSettingsFile)
         PzGSamplingInterval = fGetINISetting(location, "samplingInterval", PzGSettingsFile)
+        PzGCurrentSensor = fGetINISetting(location, "currentSensor", PzGSettingsFile)
         
 '        PzGClockFaceSwitchPref = fGetINISetting(location, "clockFaceSwitchPref", PzGSettingsFile)
-'        PzGMainGaugeTimeZone = fGetINISetting(location, "mainGaugeTimeZone", PzGSettingsFile)
-'        PzGMainDaylightSaving = fGetINISetting(location, "mainDaylightSaving", PzGSettingsFile)
-        'PzGSecondaryGaugeTimeZone = fGetINISetting(location, "secondaryGaugeTimeZone", PzGSettingsFile)
-        'PzGSecondaryDaylightSaving = fGetINISetting(location, "secondaryDaylightSaving", PzGSettingsFile)
 
         ' configuration
         PzGEnableTooltips = fGetINISetting(location, "enableTooltips", PzGSettingsFile)
@@ -693,15 +692,10 @@ Public Sub validateInputs()
         If PzGSmoothSecondHand = vbNullString Then PzGSmoothSecondHand = "0"
         If PzGSamplingInterval = vbNullString Then PzGSamplingInterval = "3"
         
-        
- 
+        If PzGCurrentSensor = vbNullString Then PzGCurrentSensor = "0"
  
         'If PzGClockFaceSwitchPref = vbNullString Then PzGClockFaceSwitchPref = "0"
-'        If PzGMainGaugeTimeZone = vbNullString Then PzGMainGaugeTimeZone = "0"
-'        If PzGMainDaylightSaving = vbNullString Then PzGMainDaylightSaving = "0"
 
-        'If PzGSecondaryGaugeTimeZone = vbNullString Then PzGSecondaryGaugeTimeZone = "1"
-        'If PzGSecondaryDaylightSaving = vbNullString Then PzGSecondaryDaylightSaving = "1"
 
         ' Configuration
         If PzGEnableTooltips = vbNullString Then PzGEnableTooltips = "0"
@@ -1004,8 +998,6 @@ Private Sub loadExcludePathCollection()
 '        .Add Empty, "minuteshadow" 'clock-hand-minutes-shadow
 '        .Add Empty, "minutehand"   'clock-hand-minutes
         
-        .Add Empty, "secondshadow" 'clock-hand-seconds-shadow
-        .Add Empty, "secondhand"   'clock-hand-seconds
 
         .Add Empty, "bigreflection"     'all reflections
         .Add Empty, "windowreflection"
@@ -1015,6 +1007,9 @@ Private Sub loadExcludePathCollection()
 
         .Add Empty, "greenlamptrue"
         .Add Empty, "greenlampfalse"
+        
+        .Add Empty, "secondshadow" 'clock-hand-seconds-shadow
+        .Add Empty, "secondhand"   'clock-hand-seconds
 
     End With
 

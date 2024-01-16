@@ -22,12 +22,8 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private Declare Function GetLogicalDriveStrings Lib "kernel32" Alias "GetLogicalDriveStringsA" (ByVal nBufferLength As Long, _
-                                                                                                ByVal lpBuffer As String) _
-                                                                                                As Long
-
 Private temperaturePercent As Long
-Private temperatureTotal As Long
+Private temperatureMax As Long
 
 'these Public Properties are set in the Parent (here, cfAlpha)
 Public cCollOverlayImages As cCollection
@@ -41,15 +37,14 @@ Attribute tmrClock.VB_VarHelpID = -1
 
 Private SDeg As Double
 
-Private driveArray(50) As String
-Private driveCount As Integer
-
 Private mTicking As Boolean             ' property Ticking
 Private mSmoothSecondHand As Boolean    ' property SmoothSecondHand
 Private mLocked As Boolean              ' property Locked
 Private mHidden As Boolean              ' property Hidden
-Private mThisOpacity As String ' property ThisOpacity
-Private mSamplingInterval As String ' property SamplingInterval
+Private mThisSensor As String            ' property thisSensor
+Private mThisSensorNo As Integer          ' property thisSensor
+Private mThisOpacity As String          ' property ThisOpacity
+Private mSamplingInterval As String     ' property SamplingInterval
 
 
 
@@ -75,8 +70,10 @@ Private Sub Class_Initialize()
     Set tmrClock = Nothing
     Set tmrClock = New_c.Timer(100, mTicking)
     
-    ' get the list of drives and the count
-    Call getDriveArray(driveArray(), driveCount)
+    mThisSensor = 0
+    
+    ' get the list of Sensors and the count
+    'Call getgblSensorArray(SensorArray(), SensorCount)
     
    On Error GoTo 0
    Exit Sub
@@ -266,6 +263,91 @@ End Property
 
 
 '---------------------------------------------------------------------------------------
+' Property : thisSensor
+' Author    : beededea
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get thisSensor() As String
+   On Error GoTo thisSensorGet_Error
+
+    thisSensor = mThisSensor
+
+   On Error GoTo 0
+   Exit Property
+
+thisSensorGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisSensor of Class Module cwOverlay"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisSensor
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisSensor(ByVal newValue As String)
+    On Error GoTo thisSensorLet_Error
+
+    If mThisSensor <> newValue Then mThisSensor = newValue Else Exit Property
+    
+    Call obtainTemperatures
+    
+    On Error GoTo 0
+    Exit Property
+
+thisSensorLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisSensor of Class Module cwOverlay"
+End Property
+'---------------------------------------------------------------------------------------
+' Property : thisSensor
+' Author    : beededea
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get thisSensorNo() As Integer
+   On Error GoTo thisSensorNoGet_Error
+
+    thisSensorNo = mThisSensorNo
+
+   On Error GoTo 0
+   Exit Property
+
+thisSensorNoGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisSensorNo of Class Module cwOverlay"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisSensorNo
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisSensorNo(ByVal newValue As Integer)
+    On Error GoTo thisSensorNoLet_Error
+
+    If mThisSensorNo <> newValue Then mThisSensorNo = newValue Else Exit Property
+            
+    'given a Sensor number select the Sensor string
+    If mThisSensorNo < gblSensorCount Then
+        mThisSensor = gblSensorArray(mThisSensorNo, 1)
+    End If
+    
+    Call obtainTemperatures
+    
+    On Error GoTo 0
+    Exit Property
+
+thisSensorNoLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisSensorNo of Class Module cwOverlay"
+End Property
+'---------------------------------------------------------------------------------------
 ' Property : samplingInterval
 ' Author    : beededea
 ' Date      : 17/05/2023
@@ -428,11 +510,12 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim Arr As Variant
     Dim Key As String: Key = vbNullString
     Dim Pat As cCairoPattern
-    Dim txtOHMtotal As String: txtOHMtotal = vbNullString
+    Dim txtOHMMax As String: txtOHMMax = vbNullString
     Dim txtOHMPercent As String: txtOHMPercent = vbNullString
     Dim textDrawn As Boolean:   textDrawn = False
     Dim someOpacity As Double: someOpacity = 0
     Dim cream As String: cream = vbNullString
+    Dim leftmost As Integer: leftmost = 0
     
     cream = RGB(235, 217, 179) ' cannot create a constant from an RGB value
    
@@ -448,7 +531,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     someOpacity = (Val(mThisOpacity) / 100) * 0.75
     
     txtOHMPercent = CStr(Int(temperaturePercent))
-    txtOHMtotal = CStr(Int(temperatureTotal))
+    txtOHMMax = CStr(Int(temperatureMax))
 
     For I = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfAlpha by duplicating collPSDNonUIElements.
       Arr = cCollOverlayImages.ItemByIndex(I)
@@ -461,20 +544,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                          
             ' for specific keys perform rotation actions, clock hands &c
              Select Case Key
-
-                 Case "secondshadow", "secondhand"
-                    
-                     ' draw the date and day in the windows just once to retain opacity
-                    CC.DrawText 265, 103, 200, 200, txtOHMPercent, , , 2, True, , someOpacity
-                    CC.DrawText 455, 297, 200, 200, txtOHMtotal, , , 2, True, , someOpacity
-                    textDrawn = True
-                    
-                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
-                    CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area
-                    
-                    CC.RotateDrawingsDeg SDeg
-                    CC.Paint Arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
-                    
+                 
                  Case "redlamptrue"
                     
                     If temperaturePercent >= 80 Then
@@ -488,7 +558,56 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
                         CC.Paint Arr(2), Pat ' render the Pattern
                     End If
+                      
+                 Case "greenlamptrue"
                     
+                    If temperaturePercent >= 80 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint Arr(2), Pat 'render the Pattern
+                    End If
+                    
+                 Case "greenlampfalse"
+                    
+                    If temperaturePercent < 80 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
+                        CC.Paint Arr(2), Pat ' render the Pattern
+                    End If
+                    
+                 Case "secondshadow", "secondhand"
+                    
+                    'set some Font and ForeColor Properties and draw some Text on the Widget
+                    W.FontName = "arial"
+                    W.ForeColor = vbBlack
+                    W.FontSize = 36
+                    W.FontBold = True
+                    W.SelectFontSettingsInto CC
+                    W.Refresh
+                    
+                    leftmost = 328
+                    If mThisSensorNo < 9 Then leftmost = 343
+                    
+                    ' draw the Sensor in the top window
+                    CC.DrawText leftmost, 50, 200, 200, Left$(mThisSensorNo + 1, 2), , , 2, True, , someOpacity
+                    
+                    'set some Font and ForeColor Properties and draw some Text on the Widget
+                    W.FontName = "arial"
+                    W.ForeColor = cream
+                    W.FontSize = 17
+                    W.FontBold = True
+                    W.SelectFontSettingsInto CC
+                    W.Refresh
+                     ' draw the date and day in the windows just once to retain opacity
+                    CC.DrawText 265, 103, 200, 200, txtOHMMax, , , 2, True, , someOpacity
+                    CC.DrawText 405, 103, 200, 200, txtOHMPercent, , , 2, True, , someOpacity
+                    CC.DrawText 459, 297, 200, 200, "C", , , 2, True, , someOpacity
+                    textDrawn = True
+                    
+                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
+                    CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area
+                    
+                    CC.RotateDrawingsDeg SDeg
+                    CC.Paint Arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
+                 
                  Case Else 'plain output for everything else ... this includes the reflection-layers,
                      
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
@@ -530,7 +649,6 @@ Private Sub tmrClock_Timer()
 
         Call obtainTemperatures
         
-        
 '    End If
     
     W.Parent.Refresh
@@ -554,9 +672,19 @@ End Sub
 Private Sub obtainTemperatures()
     On Error GoTo obtainTemperatures_Error
     
-        temperaturePercent = OHM_Usage_Percent
-        temperatureTotal = OHM_Usage_Total
+        If mThisSensorNo <> "9999" Then
+            temperaturePercent = OHM_Usage_Percent
+            temperatureMax = OHM_Usage_Max
+        Else
+            temperaturePercent = 0
+            temperatureMax = 0
+        End If
+        
+        'temperaturePercent = 85 ' debug
+        
         SDeg = (temperaturePercent * 3) + 30
+        
+        W.Refresh
     
     On Error GoTo 0
     Exit Sub
@@ -577,8 +705,10 @@ End Sub
 ' Date: 09/01/2024
 ' ----------------------------------------------------------------
 Private Function OHM_Usage_Percent() As Long
-
-      
+    On Error GoTo OHM_Usage_Percent_Error
+    
+    OHM_Usage_Percent = Val(gblSensorArray(mThisSensorNo, 2))
+         
     On Error GoTo 0
     Exit Function
 
@@ -586,10 +716,11 @@ OHM_Usage_Percent_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure OHM_Usage_Percent, line " & Erl & "."
 
+ 
 End Function
 
 ' ----------------------------------------------------------------
-' Procedure Name: OHM_Usage_Total
+' Procedure Name: OHM_Usage_Max
 ' Purpose:
 ' Procedure Kind: Function
 ' Procedure Access: Private
@@ -597,59 +728,17 @@ End Function
 ' Author:
 ' Date: 09/01/2024
 ' ----------------------------------------------------------------
-Private Function OHM_Usage_Total() As Double
+Private Function OHM_Usage_Max() As Double
+
+    OHM_Usage_Max = Val(gblSensorArray(mThisSensorNo, 3))
 
     On Error GoTo 0
     Exit Function
 
-OHM_Usage_Total_Error:
+OHM_Usage_Max_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure OHM_Usage_Total, line " & Erl & "."
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure OHM_Usage_Max, line " & Erl & "."
 
 End Function
 
-
-' ----------------------------------------------------------------
-' Procedure Name: getDriveArray
-' Purpose: Obtains the names of all the drives from the system, maximum 30
-' Procedure Kind: sub
-' Procedure Access: Private
-' Return Type: String()
-' Author: beededea
-' Date: 13/01/2024
-' ----------------------------------------------------------------
-Private Sub getDriveArray(ByRef thisArray() As String, ByRef driveCount As Integer)
-    Dim sBuffer             As String
-    Dim lLength             As Long: lLength = 0
-    Dim lReturn             As Long: lReturn = 0
-    Dim driveLoop             As Long: driveLoop = 0
-     
-    On Error GoTo getDriveArray_Error
-    
-    lLength = 255
-    sBuffer = Space$(lLength)
-    
-    lReturn = GetLogicalDriveStrings(lLength, sBuffer)
-
-    If lReturn <> 0 Then
-        For driveLoop = 0 To 50
-            If Left$(sBuffer, InStr(1, sBuffer, Chr(0))) = Chr(0) Then
-                Exit For
-            Else
-                thisArray(driveLoop) = Replace(CStr(Left$(sBuffer, InStr(1, sBuffer, Chr(0)))), vbNullChar, "")
-                sBuffer = Right$(sBuffer, Len(sBuffer) - InStr(1, sBuffer, Chr(0)))
-            End If
-        Next driveLoop
-    End If
-    
-    driveCount = driveLoop + 1
-        
-    On Error GoTo 0
-    Exit Sub
-
-getDriveArray_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getDriveArray, line " & Erl & "."
-
-End Sub
 
