@@ -525,6 +525,8 @@ Public Sub adjustMainControls()
     overlayWidget.thisSensorNo = Val(PzGCurrentSensor)
     overlayWidget.thisOpacity = Val(PzGOpacity)
     overlayWidget.samplingInterval = Val(PzGSamplingInterval)
+    'overlayWidget.thisFace = Val(PzGTemperatureScale)
+    
     
     ' set the z-ordering of the window
     Call setAlphaFormZordering
@@ -591,6 +593,8 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGSmoothSecondHand = fGetINISetting(location, "smoothSecondHand", PzGSettingsFile)
         PzGSamplingInterval = fGetINISetting(location, "samplingInterval", PzGSettingsFile)
         PzGCurrentSensor = fGetINISetting(location, "currentSensor", PzGSettingsFile)
+        PzGTemperatureScale = fGetINISetting(location, "temperatureScale", PzGSettingsFile)
+        
         
 '        PzGClockFaceSwitchPref = fGetINISetting(location, "clockFaceSwitchPref", PzGSettingsFile)
 
@@ -693,6 +697,8 @@ Public Sub validateInputs()
         If PzGSamplingInterval = vbNullString Then PzGSamplingInterval = "3"
         
         If PzGCurrentSensor = vbNullString Then PzGCurrentSensor = "0"
+        If PzGTemperatureScale = vbNullString Then PzGTemperatureScale = "0"
+        
  
         'If PzGClockFaceSwitchPref = vbNullString Then PzGClockFaceSwitchPref = "0"
 
@@ -985,6 +991,7 @@ Private Sub loadExcludePathCollection()
     On Error GoTo loadExcludePathCollection_Error
 
     With fAlpha.collPSDNonUIElements ' the exclude list
+        .Add Empty, "fahrenheit"
         .Add Empty, "clockface"
         .Add Empty, "faceweathering"
 

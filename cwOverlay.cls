@@ -517,6 +517,8 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim cream As String: cream = vbNullString
     Dim leftmost As Integer: leftmost = 0
     
+    Dim showFace As Integer: showFace = 0 ' debug
+    
     cream = RGB(235, 217, 179) ' cannot create a constant from an RGB value
    
     On Error GoTo W_Paint_Error
@@ -529,6 +531,8 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     W.SelectFontSettingsInto CC
     W.Refresh
     someOpacity = (Val(mThisOpacity) / 100) * 0.75
+    
+    showFace = 0 ' debug
     
     txtOHMCurrent = CStr(Int(temperatureCurrent))
     txtOHMMax = CStr(Int(temperatureMax))
@@ -544,6 +548,20 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                          
             ' for specific keys perform rotation actions, clock hands &c
              Select Case Key
+                 
+                 Case "fahrenheit"
+                    
+                    If showFace = 1 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint Arr(2), Pat 'render the Pattern
+                    End If
+                    
+                 Case "clockface"
+                    
+                    If showFace = 0 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
+                        CC.Paint Arr(2), Pat ' render the Pattern
+                    End If
                  
                  Case "redlamptrue"
                     

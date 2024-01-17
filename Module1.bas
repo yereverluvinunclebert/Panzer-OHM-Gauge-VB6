@@ -292,8 +292,10 @@ Public PzGGaugeFunctions As String
 'Public PzGAnimationInterval As String
 Public PzGSmoothSecondHand As String
 Public PzGSamplingInterval As String
-
 Public PzGCurrentSensor As String
+Public PzGTemperatureScale As String
+
+
 
 ' config
 Public PzGEnableTooltips As String
@@ -2783,7 +2785,7 @@ End Function
 
 ' ----------------------------------------------------------------
 ' Procedure Name: getGblSensorArray
-' Purpose: Obtains the names of all the Sensors from the system, maximum 30
+' Purpose: Obtains the names of all the Sensors from the system
 ' Procedure Kind: sub
 ' Procedure Access: public
 ' Author: beededea
