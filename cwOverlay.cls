@@ -22,7 +22,7 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private temperaturePercent As Long
+Private temperatureCurrent As Long
 Private temperatureMax As Long
 
 'these Public Properties are set in the Parent (here, cfAlpha)
@@ -511,7 +511,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim Key As String: Key = vbNullString
     Dim Pat As cCairoPattern
     Dim txtOHMMax As String: txtOHMMax = vbNullString
-    Dim txtOHMPercent As String: txtOHMPercent = vbNullString
+    Dim txtOHMCurrent As String: txtOHMCurrent = vbNullString
     Dim textDrawn As Boolean:   textDrawn = False
     Dim someOpacity As Double: someOpacity = 0
     Dim cream As String: cream = vbNullString
@@ -530,7 +530,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     W.Refresh
     someOpacity = (Val(mThisOpacity) / 100) * 0.75
     
-    txtOHMPercent = CStr(Int(temperaturePercent))
+    txtOHMCurrent = CStr(Int(temperatureCurrent))
     txtOHMMax = CStr(Int(temperatureMax))
 
     For I = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfAlpha by duplicating collPSDNonUIElements.
@@ -547,28 +547,28 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                  
                  Case "redlamptrue"
                     
-                    If temperaturePercent >= 80 Then
+                    If temperatureCurrent >= 80 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint Arr(2), Pat 'render the Pattern
                     End If
                     
                  Case "redlampfalse"
                     
-                    If temperaturePercent < 80 Then
+                    If temperatureCurrent < 80 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
                         CC.Paint Arr(2), Pat ' render the Pattern
                     End If
                       
                  Case "greenlamptrue"
                     
-                    If temperaturePercent >= 80 Then
+                    If temperatureCurrent >= 80 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint Arr(2), Pat 'render the Pattern
                     End If
                     
                  Case "greenlampfalse"
                     
-                    If temperaturePercent < 80 Then
+                    If temperatureCurrent < 80 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
                         CC.Paint Arr(2), Pat ' render the Pattern
                     End If
@@ -598,7 +598,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                     W.Refresh
                      ' draw the date and day in the windows just once to retain opacity
                     CC.DrawText 265, 103, 200, 200, txtOHMMax, , , 2, True, , someOpacity
-                    CC.DrawText 405, 103, 200, 200, txtOHMPercent, , , 2, True, , someOpacity
+                    CC.DrawText 405, 103, 200, 200, txtOHMCurrent, , , 2, True, , someOpacity
                     CC.DrawText 459, 297, 200, 200, "C", , , 2, True, , someOpacity
                     textDrawn = True
                     
@@ -672,17 +672,20 @@ End Sub
 Private Sub obtainTemperatures()
     On Error GoTo obtainTemperatures_Error
     
+        ' get the list of sensors and the count
+        Call getgblSensorArray(gblSensorArray(), gblSensorCount)
+    
         If mThisSensorNo <> "9999" Then
-            temperaturePercent = OHM_Usage_Percent
+            temperatureCurrent = OHM_Usage_Current
             temperatureMax = OHM_Usage_Max
         Else
-            temperaturePercent = 0
+            temperatureCurrent = 0
             temperatureMax = 0
         End If
         
-        'temperaturePercent = 85 ' debug
+        'temperatureCurrent = 85 ' debug
         
-        SDeg = (temperaturePercent * 3) + 30
+        SDeg = (temperatureCurrent * 3) + 30
         
         W.Refresh
     
@@ -696,7 +699,7 @@ obtainTemperatures_Error:
 End Sub
 
 ' ----------------------------------------------------------------
-' Procedure Name: OHM_Usage_Percent
+' Procedure Name: OHM_Usage_Current
 ' Purpose:
 ' Procedure Kind: Function
 ' Procedure Access: Private
@@ -704,17 +707,17 @@ End Sub
 ' Author: https://www.tek-tips.com/userinfo.cfm?member=Hypetia
 ' Date: 09/01/2024
 ' ----------------------------------------------------------------
-Private Function OHM_Usage_Percent() As Long
-    On Error GoTo OHM_Usage_Percent_Error
+Private Function OHM_Usage_Current() As Long
+    On Error GoTo OHM_Usage_Current_Error
     
-    OHM_Usage_Percent = Val(gblSensorArray(mThisSensorNo, 2))
+    OHM_Usage_Current = Val(gblSensorArray(mThisSensorNo, 2))
          
     On Error GoTo 0
     Exit Function
 
-OHM_Usage_Percent_Error:
+OHM_Usage_Current_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure OHM_Usage_Percent, line " & Erl & "."
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure OHM_Usage_Current, line " & Erl & "."
 
  
 End Function
