@@ -51,7 +51,7 @@ Begin VB.Form panzerPrefs
             Width           =   4305
          End
          Begin VB.CheckBox chkGaugeFunctions 
-            Caption         =   "Hand operation toggle *"
+            Caption         =   "Pointer operation toggle *"
             Height          =   225
             Left            =   1995
             TabIndex        =   52
@@ -70,7 +70,7 @@ Begin VB.Form panzerPrefs
             Width           =   3720
          End
          Begin VB.CheckBox chkGenStartup 
-            Caption         =   "Run the Just Clock Widget at Windows Startup "
+            Caption         =   "Run the OHM Widget at Windows Startup "
             Height          =   465
             Left            =   1995
             TabIndex        =   93
@@ -2136,7 +2136,7 @@ Private Sub cmbTemperatureScale_Click()
     PzGTemperatureScale = cmbTemperatureScale.ListIndex
     sPutINISetting "Software\PzOHMGauge", "temperatureScale", PzGTemperatureScale, PzGSettingsFile
     
-    'overlayWidget.thisFace = cmbTemperatureScale.ListIndex
+    overlayWidget.thisFace = cmbTemperatureScale.ListIndex
     
     On Error GoTo 0
     Exit Sub
@@ -3808,7 +3808,6 @@ Private Sub populatePrefsComboBoxes()
         cmbCurrentSensor.AddItem "Sensor " & (I + 1) & " " & gblSensorArray(I, 1) & " " & gblSensorArray(I, 4), I
         cmbCurrentSensor.ItemData(I) = I
     Next I
-    
     cmbCurrentSensor.AddItem "none", I
     cmbCurrentSensor.ItemData(I) = 9999
     
@@ -4657,6 +4656,7 @@ Public Sub setPrefsTooltips()
         chkDpiAwareness.ToolTipText = " Check the box to make the program DPI aware. RESTART required."
         chkEnablePrefsTooltips.ToolTipText = "Check the box to enable tooltips for all controls in the preferences utility"
         btnResetMessages.ToolTipText = "This button restores the pop-up messages to their original visible state."
+        cmbTemperatureScale.ToolTipText = "Select the temperature scale you are used to."
     Else
         imgConfig.ToolTipText = vbNullString
         imgConfigClicked.ToolTipText = vbNullString
@@ -4729,6 +4729,7 @@ Public Sub setPrefsTooltips()
         chkDpiAwareness.ToolTipText = vbNullString
         chkEnablePrefsTooltips.ToolTipText = vbNullString
         btnResetMessages.ToolTipText = vbNullString
+        cmbTemperatureScale.ToolTipText = vbNullString
     End If
 
    On Error GoTo 0

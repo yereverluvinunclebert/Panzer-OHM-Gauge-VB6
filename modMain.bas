@@ -525,7 +525,7 @@ Public Sub adjustMainControls()
     overlayWidget.thisSensorNo = Val(PzGCurrentSensor)
     overlayWidget.thisOpacity = Val(PzGOpacity)
     overlayWidget.samplingInterval = Val(PzGSamplingInterval)
-    'overlayWidget.thisFace = Val(PzGTemperatureScale)
+    overlayWidget.thisFace = Val(PzGTemperatureScale)
     
     
     ' set the z-ordering of the window

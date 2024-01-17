@@ -45,6 +45,7 @@ Private mThisSensor As String            ' property thisSensor
 Private mThisSensorNo As Integer          ' property thisSensor
 Private mThisOpacity As String          ' property ThisOpacity
 Private mSamplingInterval As String     ' property SamplingInterval
+Private mThisFace As Integer             ' property mThisFace
 
 
 
@@ -269,6 +270,48 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
+Public Property Get thisFace() As Integer
+   On Error GoTo thisFaceGet_Error
+
+    thisFace = mThisFace
+
+   On Error GoTo 0
+   Exit Property
+
+thisFaceGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwOverlay"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisFace
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisFace(ByVal newValue As Integer)
+    On Error GoTo thisFaceLet_Error
+
+    If mThisFace <> newValue Then mThisFace = newValue Else Exit Property
+    
+    Call obtainTemperatures
+    
+    On Error GoTo 0
+    Exit Property
+
+thisFaceLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwOverlay"
+End Property
+
+
+'---------------------------------------------------------------------------------------
+' Property : thisSensor
+' Author    : beededea
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
 Public Property Get thisSensor() As String
    On Error GoTo thisSensorGet_Error
 
@@ -302,6 +345,8 @@ thisSensorLet_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisSensor of Class Module cwOverlay"
 End Property
+
+
 '---------------------------------------------------------------------------------------
 ' Property : thisSensor
 ' Author    : beededea
@@ -516,9 +561,11 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim someOpacity As Double: someOpacity = 0
     Dim cream As String: cream = vbNullString
     Dim leftmost As Integer: leftmost = 0
+    Dim leftmostMax As Integer: leftmostMax = 0
+    Dim leftmostCurr As Integer: leftmostCurr = 0
     
-    Dim showFace As Integer: showFace = 0 ' debug
-    
+    Dim scaleString As String: scaleString = vbNullString
+        
     cream = RGB(235, 217, 179) ' cannot create a constant from an RGB value
    
     On Error GoTo W_Paint_Error
@@ -532,7 +579,6 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     W.Refresh
     someOpacity = (Val(mThisOpacity) / 100) * 0.75
     
-    showFace = 0 ' debug
     
     txtOHMCurrent = CStr(Int(temperatureCurrent))
     txtOHMMax = CStr(Int(temperatureMax))
@@ -551,14 +597,14 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                  
                  Case "fahrenheit"
                     
-                    If showFace = 1 Then
+                    If mThisFace = 1 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint Arr(2), Pat 'render the Pattern
                     End If
                     
                  Case "clockface"
                     
-                    If showFace = 0 Then
+                    If mThisFace = 0 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
                         CC.Paint Arr(2), Pat ' render the Pattern
                     End If
@@ -610,14 +656,27 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                     'set some Font and ForeColor Properties and draw some Text on the Widget
                     W.FontName = "arial"
                     W.ForeColor = cream
-                    W.FontSize = 17
+                    W.FontSize = 16
                     W.FontBold = True
                     W.SelectFontSettingsInto CC
                     W.Refresh
+                    
+                    leftmostMax = 265
+                    leftmostCurr = 405
+                    scaleString = "C"
+                    
+                    If mThisFace = "1" Then
+                        leftmostMax = 255
+                        leftmostCurr = 398
+                        scaleString = "F"
+                        txtOHMMax = Str$(convert(temperatureMax))
+                        txtOHMCurrent = Str$(convert(temperatureCurrent))
+                    End If
+                    
                      ' draw the date and day in the windows just once to retain opacity
-                    CC.DrawText 265, 103, 200, 200, txtOHMMax, , , 2, True, , someOpacity
-                    CC.DrawText 405, 103, 200, 200, txtOHMCurrent, , , 2, True, , someOpacity
-                    CC.DrawText 459, 297, 200, 200, "C", , , 2, True, , someOpacity
+                    CC.DrawText leftmostMax, 103, 200, 200, txtOHMMax, , , 2, True, , someOpacity
+                    CC.DrawText leftmostCurr, 103, 200, 200, txtOHMCurrent, , , 2, True, , someOpacity
+                    CC.DrawText 459, 297, 200, 200, scaleString, , , 2, True, , someOpacity
                     textDrawn = True
                     
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
@@ -700,9 +759,7 @@ Private Sub obtainTemperatures()
             temperatureCurrent = 0
             temperatureMax = 0
         End If
-        
-        'temperatureCurrent = 85 ' debug
-        
+                
         SDeg = (temperatureCurrent * 3) + 30
         
         W.Refresh
@@ -726,10 +783,13 @@ End Sub
 ' Date: 09/01/2024
 ' ----------------------------------------------------------------
 Private Function OHM_Usage_Current() As Long
+    Dim newT As Integer
     On Error GoTo OHM_Usage_Current_Error
     
-    OHM_Usage_Current = Val(gblSensorArray(mThisSensorNo, 2))
-         
+    newT = Val(gblSensorArray(mThisSensorNo, 2))
+
+    OHM_Usage_Current = newT
+     
     On Error GoTo 0
     Exit Function
 
@@ -752,7 +812,7 @@ End Function
 Private Function OHM_Usage_Max() As Double
 
     OHM_Usage_Max = Val(gblSensorArray(mThisSensorNo, 3))
-
+    
     On Error GoTo 0
     Exit Function
 
@@ -762,4 +822,33 @@ OHM_Usage_Max_Error:
 
 End Function
 
+
+
+
+
+' ----------------------------------------------------------------
+' Procedure Name: convert
+' Purpose: convert temps from C to F values here to match scale setting
+' Procedure Kind: Function
+' Procedure Access: Private
+' Parameter t ():
+' Author: beededea
+' Date: 17/01/2024
+' ----------------------------------------------------------------
+Private Function convert(t)
+    Dim newT As Integer
+    
+    On Error GoTo convert_Error
+    
+    newT = Math.Round(1.8 * t + 32)
+    convert = newT
+    
+    On Error GoTo 0
+    Exit Function
+
+convert_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure convert, line " & Erl & "."
+
+End Function
 
