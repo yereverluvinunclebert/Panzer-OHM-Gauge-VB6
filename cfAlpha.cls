@@ -163,10 +163,13 @@ Private Sub gaugeForm_BubblingEvent(ByRef Sender As Object, ByRef EventName As S
             Case "housing/helpbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, widgetName & " Help Button Help", , , , True
-            Case Else
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize. " _
-                    & vbCrLf & "You can turn off the balloon tooltips in the preferences.", _
-                    TTIconInfo, widgetName & " Configuration Help", , , , True
+            Case Else    'gblSensorArray
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "Sensor: " & gblSensorArray(overlayWidget.thisSensorNo, 1) & " (" & gblSensorArray(overlayWidget.thisSensorNo, 4) & ")" _
+                    & vbCrLf & "Current Temperature : " & gblSensorArray(overlayWidget.thisSensorNo, 2) & " C" _
+                    & vbCrLf & "Maximum Temperature : " & gblSensorArray(overlayWidget.thisSensorNo, 3) & " C" _
+                    & vbCrLf & "" _
+                    & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
+                    , TTIconInfo, widgetName & " Information.", , , , True
         End Select
     End If
     

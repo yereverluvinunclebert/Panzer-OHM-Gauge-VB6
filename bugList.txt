@@ -26,12 +26,13 @@ DONE
 ' test .js code and extract the pertinent code that attaches to WMI and replicate
 ' lamps added and lit at high temps
 ' conversion from C to F
+' switch face from C to F
 
 ' -oOo-
 
 TODO
 
-' html help and images updated
+' html help and images update
 ' chm help built
 ' test autostart
 
