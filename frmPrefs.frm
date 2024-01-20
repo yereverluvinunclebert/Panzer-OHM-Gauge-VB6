@@ -17,19 +17,36 @@ Begin VB.Form panzerPrefs
    Begin VB.Frame fraGeneral 
       Caption         =   "General"
       ForeColor       =   &H80000008&
-      Height          =   6255
+      Height          =   7275
       Left            =   75
       TabIndex        =   50
-      Top             =   1185
+      Top             =   1170
       Visible         =   0   'False
       Width           =   7995
       Begin VB.Frame fraGeneralInner 
          BorderStyle     =   0  'None
-         Height          =   5655
+         Height          =   6750
          Left            =   465
          TabIndex        =   51
          Top             =   300
          Width           =   6750
+         Begin VB.TextBox Text1 
+            Height          =   315
+            Left            =   2010
+            TabIndex        =   167
+            Top             =   3000
+            Width           =   3780
+         End
+         Begin VB.CommandButton Command1 
+            Caption         =   "..."
+            Height          =   285
+            Left            =   5880
+            Style           =   1  'Graphical
+            TabIndex        =   166
+            ToolTipText     =   "Close the utility"
+            Top             =   3000
+            Width           =   420
+         End
          Begin VB.ComboBox cmbTemperatureScale 
             Height          =   315
             ItemData        =   "frmPrefs.frx":10CA
@@ -37,7 +54,7 @@ Begin VB.Form panzerPrefs
             List            =   "frmPrefs.frx":10CC
             Style           =   2  'Dropdown List
             TabIndex        =   164
-            Top             =   3015
+            Top             =   4095
             Width           =   1740
          End
          Begin VB.ComboBox cmbCurrentSensor 
@@ -67,7 +84,7 @@ Begin VB.Form panzerPrefs
             Style           =   2  'Dropdown List
             TabIndex        =   145
             Top             =   975
-            Width           =   3720
+            Width           =   4305
          End
          Begin VB.CheckBox chkGenStartup 
             Caption         =   "Run the OHM Widget at Windows Startup "
@@ -75,7 +92,7 @@ Begin VB.Form panzerPrefs
             Left            =   1995
             TabIndex        =   93
             ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
-            Top             =   4980
+            Top             =   5955
             Width           =   4020
          End
          Begin vb6projectCCRSlider.Slider sliSamplingInterval 
@@ -83,7 +100,7 @@ Begin VB.Form panzerPrefs
             Left            =   1890
             TabIndex        =   155
             ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   3615
+            Top             =   4590
             Width           =   3870
             _ExtentX        =   6826
             _ExtentY        =   688
@@ -93,12 +110,39 @@ Begin VB.Form panzerPrefs
             SelStart        =   20
          End
          Begin VB.Label lblGeneral 
+            Caption         =   "Select Celsius / Fahrenheit"
+            Height          =   480
+            Index           =   10
+            Left            =   3855
+            TabIndex        =   170
+            Top             =   4140
+            Width           =   1980
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "The location of your temp-monitoring  software. Folder+ program name: eg. OpenHardwareMonitor.exe"
+            Height          =   660
+            Index           =   8
+            Left            =   2010
+            TabIndex        =   169
+            Top             =   3450
+            Width           =   4245
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Monitoring Program :"
+            Height          =   300
+            Index           =   7
+            Left            =   300
+            TabIndex        =   168
+            Top             =   3030
+            Width           =   1815
+         End
+         Begin VB.Label lblGeneral 
             Caption         =   "Temperature Scale :"
             Height          =   480
             Index           =   5
             Left            =   360
             TabIndex        =   165
-            Top             =   3075
+            Top             =   4155
             Width           =   1545
          End
          Begin VB.Label lblGeneral 
@@ -125,7 +169,7 @@ Begin VB.Form panzerPrefs
             Index           =   14
             Left            =   2025
             TabIndex        =   160
-            Top             =   4395
+            Top             =   5370
             Width           =   3810
          End
          Begin VB.Label lblWindowLevel 
@@ -134,7 +178,7 @@ Begin VB.Form panzerPrefs
             Index           =   13
             Left            =   495
             TabIndex        =   159
-            Top             =   3675
+            Top             =   4650
             Width           =   1410
          End
          Begin VB.Label lblWindowLevel 
@@ -143,7 +187,7 @@ Begin VB.Form panzerPrefs
             Index           =   12
             Left            =   3615
             TabIndex        =   158
-            Top             =   4080
+            Top             =   5055
             Width           =   840
          End
          Begin VB.Label lblWindowLevel 
@@ -152,7 +196,7 @@ Begin VB.Form panzerPrefs
             Index           =   11
             Left            =   5385
             TabIndex        =   157
-            Top             =   4080
+            Top             =   5055
             Width           =   405
          End
          Begin VB.Label lblWindowLevel 
@@ -161,7 +205,7 @@ Begin VB.Form panzerPrefs
             Index           =   10
             Left            =   2070
             TabIndex        =   156
-            Top             =   4080
+            Top             =   5055
             Width           =   345
          End
          Begin VB.Label lblGeneral 
@@ -198,7 +242,7 @@ Begin VB.Form panzerPrefs
             Left            =   960
             TabIndex        =   94
             Tag             =   "lblRefreshInterval"
-            Top             =   5100
+            Top             =   6075
             Width           =   1740
          End
          Begin VB.Label lblGeneral 
@@ -3251,8 +3295,8 @@ Private Sub btnHelp_Click()
     
     On Error GoTo btnHelp_Click_Error
     
-        If fFExists(App.path & "\help\Help.chm") Then
-            Call ShellExecute(Me.hwnd, "Open", App.path & "\help\Help.chm", vbNullString, App.path, 1)
+        If fFExists(App.Path & "\help\Help.chm") Then
+            Call ShellExecute(Me.hwnd, "Open", App.Path & "\help\Help.chm", vbNullString, App.Path, 1)
         Else
             MsgBox ("%Err-I-ErrorNumber 11 - The help file - Help.chm - is missing from the help folder.")
         End If
@@ -3359,7 +3403,7 @@ Private Sub btnSave_Click()
     PzGDefaultEditor = txtDefaultEditor.Text
             
     If PzGStartup = "1" Then
-        Call savestring(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PzOHMGaugeWidget", """" & App.path & "\" & "Panzer OHM Gauge.exe""")
+        Call savestring(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PzOHMGaugeWidget", """" & App.Path & "\" & "Panzer OHM Gauge.exe""")
     Else
         Call savestring(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PzOHMGaugeWidget", vbNullString)
     End If
@@ -3602,7 +3646,7 @@ End Sub
 '
 Private Sub adjustPrefsControls()
     
-    Dim I As Integer: I = 0
+    Dim i As Integer: i = 0
     Dim fntWeight As Integer: fntWeight = 0
     Dim fntStyle As Boolean: fntStyle = False
     Dim sliGaugeSizeOldValue As Long: sliGaugeSizeOldValue = 0
@@ -3736,7 +3780,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 
 Private Sub populatePrefsComboBoxes()
-    Dim I As Integer: I = 0
+    Dim i As Integer: i = 0
     
     On Error GoTo populatePrefsComboBoxes_Error
     
@@ -3803,13 +3847,13 @@ Private Sub populatePrefsComboBoxes()
     cmbTickSwitchPref.AddItem "Smooth", 1
     cmbTickSwitchPref.ItemData(1) = 1
     
-    For I = 0 To (gblSensorCount - 1)
-        If gblSensorArray(I, 4) = "" Then Exit For
-        cmbCurrentSensor.AddItem "Sensor " & (I + 1) & " " & gblSensorArray(I, 1) & " " & gblSensorArray(I, 4), I
-        cmbCurrentSensor.ItemData(I) = I
-    Next I
-    cmbCurrentSensor.AddItem "none", I
-    cmbCurrentSensor.ItemData(I) = 9999
+    For i = 0 To (gblSensorCount - 1)
+        If gblSensorArray(i, 4) = "" Then Exit For
+        cmbCurrentSensor.AddItem "Sensor " & (i + 1) & " " & gblSensorArray(i, 1) & " " & gblSensorArray(i, 4), i
+        cmbCurrentSensor.ItemData(i) = i
+    Next i
+    cmbCurrentSensor.AddItem "none", i
+    cmbCurrentSensor.ItemData(i) = 9999
     
     cmbTemperatureScale.AddItem "centigrade", 0
     cmbTemperatureScale.ItemData(0) = 0
@@ -4234,7 +4278,7 @@ Private Sub lblGitHub_dblClick()
     answerMsg = "This option opens a browser window and take you straight to Github. Proceed?"
     answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Proceed to Github? ", True, "lblGitHubDblClick")
     If answer = vbYes Then
-       Call ShellExecute(Me.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6", vbNullString, App.path, 1)
+       Call ShellExecute(Me.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6", vbNullString, App.Path, 1)
     End If
 
    On Error GoTo 0
@@ -4801,7 +4845,7 @@ Private Sub loadPrefsAboutText()
     lblMinorVersion.Caption = App.Minor
     lblRevisionNum.Caption = App.Revision
     
-    Call LoadFileToTB(txtAboutText, App.path & "\resources\txt\about.txt", False)
+    Call LoadFileToTB(txtAboutText, App.Path & "\resources\txt\about.txt", False)
 
    On Error GoTo 0
    Exit Sub

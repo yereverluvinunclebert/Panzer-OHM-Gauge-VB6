@@ -142,6 +142,9 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     ' place the form at the saved location
     Call makeVisibleFormElements
     
+    ' test open hardware monitor is running
+    Call checkMonitorIsRunning
+    
     ' get the list of sensors and the count
     Call getgblSensorArray(gblSensorArray(), gblSensorCount)
     
@@ -1111,3 +1114,8 @@ End Function
 
 
 
+' test open hardware monitor is running
+Private Sub checkMonitorIsRunning()
+
+
+End Sub

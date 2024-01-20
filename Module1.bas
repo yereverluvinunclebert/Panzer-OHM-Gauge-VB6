@@ -439,6 +439,51 @@ Public msgBoxADynamicSizingFlg As Boolean
 Public gblSensorArray() As String
 Public gblSensorCount As Integer
 
+' APIs and variables for querying processes START
+Type PROCESSENTRY32
+    dwSize As Long
+    cntUsage As Long
+    th32ProcessID As Long
+    th32DefaultHeapID As Long
+    th32ModuleID As Long
+    cntThreads As Long
+    th32ParentProcessID As Long
+    pcPriClassBase As Long
+    dwFlags As Long
+    szexeFile As String * 260
+End Type
+
+Private Const PROCESS_ALL_ACCESS = &H1F0FFF
+Private Const TH32CS_SNAPPROCESS As Long = 2&
+Private uProcess   As PROCESSENTRY32
+Private hSnapshot As Long
+
+Private Declare Function OpenProcess Lib "kernel32.dll" (ByVal dwDesiredAccess As Long, ByVal blnheritHandle As Long, ByVal dwAppProcessId As Long) As Long
+Private Declare Function ProcessFirst Lib "kernel32.dll" Alias "Process32First" (ByVal hSnapshot As Long, ByRef uProcess As PROCESSENTRY32) As Long
+Private Declare Function ProcessNext Lib "kernel32.dll" Alias "Process32Next" (ByVal hSnapshot As Long, ByRef uProcess As PROCESSENTRY32) As Long
+Private Declare Function CreateToolhelpSnapshot Lib "kernel32.dll" (ByVal lFlags As Long, ByRef lProcessID As Long) As Long ' Alias "CreateToolhelp32Snapshot"
+Private Declare Function CreateToolhelp32Snapshot Lib "kernel32" (ByVal lFlags As Long, ByVal lProcessID As Long) As Long
+Private Declare Function TerminateProcess Lib "kernel32.dll" (ByVal ApphProcess As Long, ByVal uExitCode As Long) As Long
+Private Declare Function CloseHandle Lib "kernel32.dll" (ByVal hObject As Long) As Long
+Private Declare Function GetCurrentProcess Lib "kernel32" () As Long
+Private Declare Function GetCurrentProcessId Lib "kernel32" () As Long
+
+' APIs for querying processes END
+
+
+' APIs and variables for querying running processes' paths START
+Private Const PROCESS_QUERY_INFORMATION As Long = &H400
+Private Const PROCESS_VM_READ As Long = (&H10)
+Private Const API_NULL As Long = 0
+
+Private Declare Function GetProcessImageFileName Lib "psapi.dll" Alias "GetProcessImageFileNameA" (ByVal hProcess As Long, ByVal lpImageFileName As String, ByVal nSize As Long) As Long
+' APIs and variables for querying running processes' paths ENDS
+
+Private lstDevices(1, 25) As String
+Private lstDevicesListCount As Integer
+Public sAllDrives As String
+
+
 
 '---------------------------------------------------------------------------------------
 ' Procedure : fFExists
@@ -945,7 +990,7 @@ Public Sub addTargetFile(ByVal fieldValue As String, ByRef retFileName As String
             ' set the default folder to the existing reference
             dialogInitDir = fieldValue 'start dir, might be "C:\" or so also
         Else
-            dialogInitDir = App.path 'start dir, might be "C:\" or so also
+            dialogInitDir = App.Path 'start dir, might be "C:\" or so also
         End If
     End If
     
@@ -984,16 +1029,16 @@ End Sub
 ' Purpose   : get the folder or directory path as a string not including the last backslash
 '---------------------------------------------------------------------------------------
 '
-Public Function fGetDirectory(ByRef path As String) As String
+Public Function fGetDirectory(ByRef Path As String) As String
 
    On Error GoTo fGetDirectory_Error
    ''If debugflg = 1  Then DebugPrint "%" & "fnGetDirectory"
 
-    If InStrRev(path, "\") = 0 Then
+    If InStrRev(Path, "\") = 0 Then
         fGetDirectory = vbNullString
         Exit Function
     End If
-    fGetDirectory = Left$(path, InStrRev(path, "\") - 1)
+    fGetDirectory = Left$(Path, InStrRev(Path, "\") - 1)
 
    On Error GoTo 0
    Exit Function
@@ -1548,8 +1593,8 @@ Public Sub aboutClickEvent()
     On Error GoTo aboutClickEvent_Error
     
     fileToPlay = "till.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    If PzGEnableSounds = "1" And fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
     
     ' The RC forms are measured in pixels so the positioning needs to pre-convert the twips into pixels
@@ -1592,8 +1637,8 @@ Public Sub helpSplash()
     On Error GoTo helpSplash_Error
 
     fileToPlay = "till.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    If PzGEnableSounds = "1" And fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
     fMain.helpForm.Top = (screenHeightPixels / 2) - (fMain.helpForm.Height / 2)
@@ -1632,8 +1677,8 @@ Public Sub licenceSplash()
     On Error GoTo licenceSplash_Error
 
     fileToPlay = "till.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    If PzGEnableSounds = "1" And fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
     
     
@@ -1681,7 +1726,7 @@ Public Sub mnuCoffee_ClickEvent()
     answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Request to Donate a Kofi", True, "mnuCoffeeClickEvent")
 
     If answer = vbYes Then
-        Call ShellExecute(menuForm.hwnd, "Open", "https://www.ko-fi.com/yereverluvinunclebert", vbNullString, App.path, 1)
+        Call ShellExecute(menuForm.hwnd, "Open", "https://www.ko-fi.com/yereverluvinunclebert", vbNullString, App.Path, 1)
     End If
 
    On Error GoTo 0
@@ -1711,7 +1756,7 @@ Public Sub mnuSupport_ClickEvent()
     answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Request to Contact Support", True, "mnuSupportClickEvent")
 
     If answer = vbYes Then
-        Call ShellExecute(menuForm.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6/issues", vbNullString, App.path, 1)
+        Call ShellExecute(menuForm.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6/issues", vbNullString, App.Path, 1)
     End If
 
    On Error GoTo 0
@@ -2476,8 +2521,8 @@ Public Sub lockWidget()
     
     sPutINISetting "Software\PzOHMGauge", "preventDragging", PzGPreventDragging, PzGSettingsFile
    
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    If PzGEnableSounds = "1" And fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
     
     On Error GoTo 0
@@ -2534,8 +2579,8 @@ Public Sub TurnFunctionsOn()
    On Error GoTo TurnFunctionsOn_Error
 
     fileToPlay = "ting.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    If PzGEnableSounds = "1" And fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
     overlayWidget.Ticking = True
@@ -2599,7 +2644,7 @@ Public Sub hardRestart()
     
     On Error GoTo hardRestart_Error
 
-    thisCommand = App.path & "\restart.exe"
+    thisCommand = App.Path & "\restart.exe"
     
     If fFExists(thisCommand) Then
         
@@ -2768,9 +2813,9 @@ Public Function ArrayString(ParamArray tokens()) As String()
     On Error GoTo ArrayString_Error
 
     ReDim Arr(UBound(tokens)) As String
-    Dim I As Long
-    For I = 0 To UBound(tokens)
-        Arr(I) = tokens(I)
+    Dim i As Long
+    For i = 0 To UBound(tokens)
+        Arr(i) = tokens(i)
     Next
     ArrayString = Arr
 
@@ -2799,7 +2844,7 @@ Public Sub getgblSensorArray(ByRef thisArray() As String, ByRef gblSensorCount A
     Dim colItems As Object
     Dim objItem As Object
     Dim thisSensorCount As Integer: thisSensorCount = 0
-    Dim I As Integer
+    Dim i As Integer
     
     On Error GoTo getGblSensorArray_Error
     
@@ -2813,11 +2858,11 @@ Public Sub getgblSensorArray(ByRef thisArray() As String, ByRef gblSensorCount A
     
     ReDim thisArray(thisSensorCount, 4) As String
     For Each objItem In colItems
-        thisArray(I, 1) = objItem.Name
-        thisArray(I, 2) = objItem.Value
-        thisArray(I, 3) = objItem.Max
-        thisArray(I, 4) = objItem.Identifier
-        I = I + 1
+        thisArray(i, 1) = objItem.Name
+        thisArray(i, 2) = objItem.Value
+        thisArray(i, 3) = objItem.Max
+        thisArray(i, 4) = objItem.Identifier
+        i = i + 1
     Next
           
     gblSensorCount = thisSensorCount
@@ -2831,3 +2876,226 @@ getGblSensorArray_Error:
 
 End Sub
 
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : IsRunning
+' Author    : beededea
+' Date      : 21/09/2019
+' Purpose   : determines if a process is running or not
+'---------------------------------------------------------------------------------------
+'
+Public Function IsRunning(ByRef NameProcess As String, ByRef processID As Long) As Boolean
+
+    Dim AppCount As Integer: AppCount = 0
+    Dim RProcessFound As Long: RProcessFound = 0
+    Dim SzExename As String: SzExename = vbNullString
+    Dim ExitCode As Long: ExitCode = 0
+    Dim procId As Long: procId = 0
+    Dim a As Integer: a = 0
+    Dim i As Integer: i = 0
+    Dim binaryName As String: binaryName = vbNullString
+    Dim folderName As String: folderName = vbNullString
+    Dim runningProcessFolder As String: runningProcessFolder = vbNullString
+
+    On Error GoTo IsRunning_Error
+    'If debugflg = 1 Then debugLog "%IsRunning"
+    
+    ' ignore a Windows binary that can persist
+    If InStr("RUNDLL32.exe", NameProcess) > 0 Then
+        IsRunning = False
+        Exit Function
+    End If
+
+    If NameProcess <> vbNullString Then
+            AppCount = 0
+                     
+            If InStr(NameProcess, "::{") > 0 Then
+                IsRunning = False
+                Exit Function  ' the target is a CLSID so invalid
+            End If
+
+            binaryName = getFileNameFromPath(NameProcess)
+            'If binaryName = vbNullString Then Exit Function
+            
+            folderName = getFolderNameFromPath(NameProcess) ' folder name of the binary in the stored process array
+            If binaryName = "" Then
+                IsRunning = False
+                Exit Function  ' the target is a folder so also invalid
+            End If
+            
+            uProcess.dwSize = Len(uProcess)
+            hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0&)
+            RProcessFound = ProcessFirst(hSnapshot, uProcess)
+            Do
+                i = InStr(1, uProcess.szexeFile, Chr$(0))
+                SzExename = LCase$(Left$(uProcess.szexeFile, i - 1))
+    
+                If Right$(SzExename, Len(binaryName)) = LCase$(binaryName) Then
+
+                        AppCount = AppCount + 1
+                        procId = uProcess.th32ProcessID
+
+                        runningProcessFolder = getFolderNameFromPath(getExePathFromPID(procId))
+                        
+                        ' some processes can only be interrogated when running with admin
+                        If runningProcessFolder = vbNullString Then
+                                IsRunning = True
+                                processID = procId
+                        Else
+                            If LCase$(runningProcessFolder) = LCase$(folderName) Then
+                                IsRunning = True
+                                processID = procId
+                            Else
+                                'MsgBox runningProcessFolder & " " & binaryName
+                                IsRunning = False
+                            End If
+                        End If
+                        
+                        
+                        Exit Function
+                End If
+                RProcessFound = ProcessNext(hSnapshot, uProcess)
+    
+            Loop While RProcessFound
+            Call CloseHandle(hSnapshot)
+    End If
+
+
+   On Error GoTo 0
+   Exit Function
+
+IsRunning_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure IsRunning of Module common"
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : getFolderNameFromPath
+' Author    : beededea
+' Date      : 11/07/2019
+' Purpose   : get the folder or directory path as a string not including the last backslash
+'---------------------------------------------------------------------------------------
+'
+Public Function getFolderNameFromPath(ByRef Path As String) As String
+
+   On Error GoTo getFolderNameFromPath_Error
+   'If debugflg = 1 Then debugLog "%" & "getFolderNameFromPath"
+
+    If InStrRev(Path, "\") = 0 Then
+        getFolderNameFromPath = vbNullString
+        Exit Function
+    End If
+    getFolderNameFromPath = Left$(Path, InStrRev(Path, "\") - 1)
+
+   On Error GoTo 0
+   Exit Function
+
+getFolderNameFromPath_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getFolderNameFromPath of Module Common"
+End Function
+
+
+
+'
+'---------------------------------------------------------------------------------------
+' Procedure : getFileNameFromPath
+' Author    : beededea
+' Date      : 01/06/2019
+' Purpose   : A function to getFileNameFromPath
+'
+'---------------------------------------------------------------------------------------
+'
+Public Function getFileNameFromPath(ByRef strFullPath As String) As String
+   On Error GoTo getFileNameFromPath_Error
+      
+   ' returns the remainder of the path from the final backslash which can be a file or a folder
+   If Not fFExists(strFullPath) Then ' tests to see if a file or a folder of the same name in the same location
+        getFileNameFromPath = ""    ' if a file does not exist then what remains must be a folder
+        Exit Function               ' if a file does exist get its name below
+   End If
+   getFileNameFromPath = Right$(strFullPath, Len(strFullPath) - InStrRev(strFullPath, "\"))
+
+   On Error GoTo 0
+   Exit Function
+
+getFileNameFromPath_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getFileNameFromPath of Module Common"
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : getExePathFromPID
+' Author    : beededea
+' Date      : 25/08/2020
+' Purpose   : getting the full path of a running process is not as easy as you'd expect
+'---------------------------------------------------------------------------------------
+'
+Public Function getExePathFromPID(ByVal idProc As Long) As String
+    Dim sBuf As String:  sBuf = vbNullString
+    Dim sChar As Long: sChar = 0
+    Dim useloop As Integer: useloop = 0
+    Dim hProcess As Long: hProcess = 0
+    
+    On Error GoTo getExePathFromPID_Error
+
+    hProcess = OpenProcess(PROCESS_QUERY_INFORMATION Or PROCESS_VM_READ, 0, idProc)
+    If hProcess Then
+        sBuf = String$(260, vbNullChar)
+        sChar = GetProcessImageFileName(hProcess, sBuf, 260)
+        If sChar Then
+            sBuf = NoNulls(sBuf)
+            ' this loop replaces the internal windows volume name with the legacy naming convention, ie. C:\, D:\ &c
+            For useloop = 1 To lstDevicesListCount
+                If InStr(1, sBuf, lstDevices(1, useloop)) > 0 Then
+                    sBuf = Replace(sBuf, lstDevices(1, useloop), Chr$(lstDevices(0, useloop)) & ":")
+                    Exit For
+                End If
+            Next useloop
+            getExePathFromPID = sBuf
+        End If
+        CloseHandle hProcess
+    End If
+
+   On Error GoTo 0
+   Exit Function
+
+getExePathFromPID_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getExePathFromPID of Module common"
+End Function
+
+'---------------------------------------------------------------------------------------
+' Procedure : NoNulls
+' Author    : beededea
+' Date      : 25/08/2020
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Function NoNulls(ByVal Strng As String) As String
+    Dim i As Integer: i = 0
+    On Error GoTo NoNulls_Error
+
+    If Len(Strng) > 0 Then
+        i = InStr(Strng, vbNullChar)
+        Select Case i
+            Case 0
+                NoNulls = Strng
+            Case 1
+                NoNulls = vbNullString
+            Case Else
+                NoNulls = Left$(Strng, i - 1)
+        End Select
+    End If
+
+   On Error GoTo 0
+   Exit Function
+
+NoNulls_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure NoNulls of Module common"
+End Function
