@@ -23,14 +23,24 @@ DONE
 ' sampling interval var validation - done
 ' sampling interval var reading/writing - done
 
-' test .js code and extract the pertinent code that attaches to WMI and replicate
-' lamps added and lit at high temps
-' conversion from C to F
-' switch face from C to F
+' test .js code and extract the pertinent code that attaches to WMI and replicate - done
+' lamps added and lit at high temps - done
+' conversion from C to F - done
+' switch face from C to F - done
+
+' balloon tooltips with current data on the gauge itself - done
+' prefs sensor controls added standard tooltips - done
+' added isRunning code and APIs/vars to test for OHM.exe - done
 
 ' -oOo-
 
 TODO
+
+' balloon tooltip text in F as well as C
+
+' added file selection code to the OHM location button - wip
+
+' add vars for storing/reading and validating the full path to the OHM binary
 
 ' html help and images update
 ' chm help built

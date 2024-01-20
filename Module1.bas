@@ -53,7 +53,7 @@ Private Type FONTSTRUC
   hdc As Long
   lpLogFont As Long
   iPointSize As Long
-  Flags As Long
+  flags As Long
   rgbColors As Long
   lCustData As Long
   lpfnHook As Long
@@ -68,11 +68,11 @@ End Type
 
 Private Type ChooseColorStruct
     lStructSize As Long
-    hwndOwner As Long
+    hWndOwner As Long
     hInstance As Long
     rgbResult As Long
     lpCustColors As Long
-    Flags As Long
+    flags As Long
     lCustData As Long
     lpfnHook As Long
     lpTemplateName As String
@@ -92,7 +92,7 @@ Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (hpvDest As 
 
 '------------------------------------------------------ STARTS
 ' API and enums for acquiring the special folder paths
-Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hwndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal pszPath As String) As Long
+Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hWndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal pszPath As String) As Long
 
 Public Enum FolderEnum ' has to be public
     feCDBurnArea = 59 ' \Docs & Settings\User\Local Settings\Application Data\Microsoft\CD Burning
@@ -142,7 +142,7 @@ End Enum
 
 '------------------------------------------------------ STARTS
 ' APIs for useful functions START
-Public Declare Function ShellExecute Lib "Shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
+Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
 ' APIs for useful functions END
 '------------------------------------------------------ ENDS
 
@@ -210,7 +210,7 @@ End Enum
 ' Types defined for opening a common dialog box to select files without OCX dependencies
 Private Type OPENFILENAME
     lStructSize As Long    'The size of this struct (Use the Len function)
-    hwndOwner As Long       'The hWnd of the owner window. The dialog will be modal to this window
+    hWndOwner As Long       'The hWnd of the owner window. The dialog will be modal to this window
     hInstance As Long            'The instance of the calling thread. You can use the App.hInstance here.
     lpstrFilter As String        'Use this to filter what files are showen in the dialog. Separate each filter with Chr$(0). The string also has to end with a Chr(0).
     lpstrCustomFilter As String  'The pattern the user has choosed is saved here if you pass a non empty string. I never use this one
@@ -222,7 +222,7 @@ Private Type OPENFILENAME
     nMaxFileTitle As Long        'The length of lpstrFileTitle + 1
     lpstrInitialDir As String    'The path to the initial path :) If you pass an empty string the initial path is the current path.
     lpstrTitle As String         'The caption of the dialog.
-    Flags As FileOpenConstants                'Flags. See the values in MSDN Library (you can look at the flags property of the common dialog control)
+    flags As FileOpenConstants                'Flags. See the values in MSDN Library (you can look at the flags property of the common dialog control)
     nFileOffset As Integer       'Points to the what character in lpstrFile where the actual filename begins (zero based)
     nFileExtension As Integer    'Same as nFileOffset except that it points to the file extention.
     lpstrDefExt As String        'Can contain the extention Windows should add to a file if the user doesn't provide one (used with the GetSaveFileName API function)
@@ -232,7 +232,7 @@ Private Type OPENFILENAME
 End Type
 
 Private Type BROWSEINFO
-    hwndOwner As Long
+    hWndOwner As Long
     pidlRoot As Long 'LPCITEMIDLIST
     pszDisplayName As String
     lpszTitle As String
@@ -294,6 +294,7 @@ Public PzGSmoothSecondHand As String
 Public PzGSamplingInterval As String
 Public PzGCurrentSensor As String
 Public PzGTemperatureScale As String
+Public PzGMonitoringProgram As String
 
 
 
@@ -369,6 +370,7 @@ Public PzGFormHighDpiYPosTwips As String
 
 Public PzGFormLowDpiXPosTwips As String
 Public PzGFormLowDpiYPosTwips As String
+
 
 
 '------------------------------------------------------ ENDS
@@ -1453,7 +1455,7 @@ Public Function fDialogFont(ByRef f As FormFontInfo) As Boolean
     CopyMemory ByVal lLogFontAddress, logFnt, Len(logFnt)
     ftStruc.lpLogFont = lLogFontAddress
     'ftStruc.flags = CF_SCREENFONTS Or CF_EFFECTS Or CF_INITTOLOGFONTSTRUCT
-    ftStruc.Flags = CF_SCREENFONTS Or CF_INITTOLOGFONTSTRUCT
+    ftStruc.flags = CF_SCREENFONTS Or CF_INITTOLOGFONTSTRUCT
     If ChooseFont(ftStruc) = 1 Then
       CopyMemory logFnt, ByVal lLogFontAddress, Len(logFnt)
       f.Weight = logFnt.lfWeight
@@ -2813,9 +2815,9 @@ Public Function ArrayString(ParamArray tokens()) As String()
     On Error GoTo ArrayString_Error
 
     ReDim Arr(UBound(tokens)) As String
-    Dim i As Long
-    For i = 0 To UBound(tokens)
-        Arr(i) = tokens(i)
+    Dim I As Long
+    For I = 0 To UBound(tokens)
+        Arr(I) = tokens(I)
     Next
     ArrayString = Arr
 
@@ -2844,7 +2846,7 @@ Public Sub getgblSensorArray(ByRef thisArray() As String, ByRef gblSensorCount A
     Dim colItems As Object
     Dim objItem As Object
     Dim thisSensorCount As Integer: thisSensorCount = 0
-    Dim i As Integer
+    Dim I As Integer
     
     On Error GoTo getGblSensorArray_Error
     
@@ -2858,11 +2860,11 @@ Public Sub getgblSensorArray(ByRef thisArray() As String, ByRef gblSensorCount A
     
     ReDim thisArray(thisSensorCount, 4) As String
     For Each objItem In colItems
-        thisArray(i, 1) = objItem.Name
-        thisArray(i, 2) = objItem.Value
-        thisArray(i, 3) = objItem.Max
-        thisArray(i, 4) = objItem.Identifier
-        i = i + 1
+        thisArray(I, 1) = objItem.Name
+        thisArray(I, 2) = objItem.Value
+        thisArray(I, 3) = objItem.Max
+        thisArray(I, 4) = objItem.Identifier
+        I = I + 1
     Next
           
     gblSensorCount = thisSensorCount
@@ -2894,7 +2896,7 @@ Public Function IsRunning(ByRef NameProcess As String, ByRef processID As Long) 
     Dim ExitCode As Long: ExitCode = 0
     Dim procId As Long: procId = 0
     Dim a As Integer: a = 0
-    Dim i As Integer: i = 0
+    Dim I As Integer: I = 0
     Dim binaryName As String: binaryName = vbNullString
     Dim folderName As String: folderName = vbNullString
     Dim runningProcessFolder As String: runningProcessFolder = vbNullString
@@ -2929,8 +2931,8 @@ Public Function IsRunning(ByRef NameProcess As String, ByRef processID As Long) 
             hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0&)
             RProcessFound = ProcessFirst(hSnapshot, uProcess)
             Do
-                i = InStr(1, uProcess.szexeFile, Chr$(0))
-                SzExename = LCase$(Left$(uProcess.szexeFile, i - 1))
+                I = InStr(1, uProcess.szexeFile, Chr$(0))
+                SzExename = LCase$(Left$(uProcess.szexeFile, I - 1))
     
                 If Right$(SzExename, Len(binaryName)) = LCase$(binaryName) Then
 
@@ -3077,18 +3079,18 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function NoNulls(ByVal Strng As String) As String
-    Dim i As Integer: i = 0
+    Dim I As Integer: I = 0
     On Error GoTo NoNulls_Error
 
     If Len(Strng) > 0 Then
-        i = InStr(Strng, vbNullChar)
-        Select Case i
+        I = InStr(Strng, vbNullChar)
+        Select Case I
             Case 0
                 NoNulls = Strng
             Case 1
                 NoNulls = vbNullString
             Case Else
-                NoNulls = Left$(Strng, i - 1)
+                NoNulls = Left$(Strng, I - 1)
         End Select
     End If
 
@@ -3099,3 +3101,7 @@ NoNulls_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure NoNulls of Module common"
 End Function
+
+
+
+
