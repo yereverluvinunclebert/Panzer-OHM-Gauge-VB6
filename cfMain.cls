@@ -134,7 +134,7 @@ Public Sub initAndShowHelpForm(ByVal x As Long, ByVal y As Long, Optional ByVal 
     On Error GoTo initAndShowHelpForm_Error
     
     If PzGDpiAwareness = "0" Then
-        helpFormWidth = 900
+        helpFormWidth = 1000
         helpFormHeight = 800
         If helpFormWidth > screenWidthPixels Then helpFormWidth = screenWidthPixels
         If helpFormHeight > screenHeightPixels Then helpFormHeight = screenHeightPixels
@@ -281,7 +281,7 @@ Public Sub initAndShowLicenceForm(ByVal x As Long, ByVal y As Long, Optional ByV
     textBox.Widget.BackColor = &H4000&
     textBox.Widget.ForeColor = vbWhite
     
-    Call LoadFileToTB(textBox, App.path & "\resources\txt\licence.txt", False)
+    Call LoadFileToTB(textBox, App.Path & "\resources\txt\licence.txt", False)
 
     textBox.Text = widgetName & vbCrLf & vbCrLf & _
     "Copyright © 1992-2023 Dean Beedell" & vbCrLf & vbCrLf & _
@@ -323,8 +323,8 @@ Private Sub btnAccept_Click()
     On Error GoTo btnAccept_Click_Error
     
     fileToPlay = "ting.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    If PzGEnableSounds = "1" And fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
     answer = msgBoxA("User accepted licence, thankyou.", vbOKOnly + vbExclamation, "Licence Acceptance", True, "btnAcceptClick")
