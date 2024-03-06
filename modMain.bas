@@ -177,6 +177,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
  
     ' configure any global timers here
     Call configureTimers
+
         
     ' RC message pump will auto-exit when Cairo Forms > 0 so we run it only when 0, this prevents message interruption
     ' when running twice on reload.
@@ -233,7 +234,7 @@ Private Sub initialiseGlobalVars()
     ' general
     PzGStartup = vbNullString
     PzGGaugeFunctions = vbNullString
-    PzGSmoothSecondHand = vbNullString
+    PzGPointerAnimate = vbNullString
     PzGSamplingInterval = vbNullString
     
         
@@ -504,11 +505,11 @@ Public Sub adjustMainControls()
 
     End With
     
-    If PzGSmoothSecondHand = "0" Then
-        overlayWidget.SmoothSecondHand = False
+    If PzGPointerAnimate = "0" Then
+        overlayWidget.PointerAnimate = False
         fAlpha.gaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(PzGOpacity) / 100
     Else
-        overlayWidget.SmoothSecondHand = True
+        overlayWidget.PointerAnimate = True
         fAlpha.gaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
     End If
         
@@ -593,7 +594,7 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         ' general
         PzGStartup = fGetINISetting(location, "startup", PzGSettingsFile)
         PzGGaugeFunctions = fGetINISetting(location, "gaugeFunctions", PzGSettingsFile)
-        PzGSmoothSecondHand = fGetINISetting(location, "smoothSecondHand", PzGSettingsFile)
+        PzGPointerAnimate = fGetINISetting(location, "pointerAnimate", PzGSettingsFile)
         PzGSamplingInterval = fGetINISetting(location, "samplingInterval", PzGSettingsFile)
         PzGCurrentSensor = fGetINISetting(location, "currentSensor", PzGSettingsFile)
         PzGTemperatureScale = fGetINISetting(location, "temperatureScale", PzGSettingsFile)
@@ -697,7 +698,7 @@ Public Sub validateInputs()
         If PzGGaugeFunctions = vbNullString Then PzGGaugeFunctions = "1" ' always turn
 '        If PzGAnimationInterval = vbNullString Then PzGAnimationInterval = "130"
         If PzGStartup = vbNullString Then PzGStartup = "1"
-        If PzGSmoothSecondHand = vbNullString Then PzGSmoothSecondHand = "0"
+        If PzGPointerAnimate = vbNullString Then PzGPointerAnimate = "0"
         If PzGSamplingInterval = vbNullString Then PzGSamplingInterval = "3"
         
         If PzGCurrentSensor = vbNullString Then PzGCurrentSensor = "0"

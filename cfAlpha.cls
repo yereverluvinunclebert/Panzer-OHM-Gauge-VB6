@@ -149,7 +149,7 @@ Private Sub gaugeForm_BubblingEvent(ByRef Sender As Object, ByRef EventName As S
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "Click me to open the preferences utility. The configuration of the widget is performed using the preference utility.", _
                      TTIconInfo, widgetName & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "Click here to toggle the tick type from once per second to a more fluid, continuous movement.", _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "Click here to toggle the pointer movement from once per interval to a more fluid, continuous movement.", _
                      TTIconInfo, widgetName & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "This button is not allocated a function in this particular widget.", _
@@ -259,8 +259,8 @@ Private Sub startbutton_click()
     Call TurnFunctionsOn
 
     fileToPlay = "ting.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    If PzGEnableSounds = "1" And fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
    On Error GoTo 0
@@ -290,8 +290,8 @@ Private Sub stopbutton_mouseUp(ByRef Sender As Object)
     Call SwitchOff
     
     fileToPlay = "stop.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    If PzGEnableSounds = "1" And fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
    On Error GoTo 0
@@ -367,8 +367,8 @@ Private Sub switchfacesbutton_mouseUp(ByRef Sender As Object)
     overlayWidget.thisSensorNo = currSensorNo
         
     fileToPlay = "till.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    If PzGEnableSounds = "1" And fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
    On Error GoTo 0
    Exit Sub
@@ -420,8 +420,8 @@ Private Sub prefsbutton_mouseDown(ByRef Sender As Object)
     'Sender.Widget.Visible = False
     Sender.Widget.Refresh ' this removes the delay in the Button depressing
     fileToPlay = "winding.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    If PzGEnableSounds = "1" And fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
    'MsgBox "prefsbutton_mouseDown"
    Call makeProgramPreferencesAvailable
@@ -446,24 +446,25 @@ Private Sub tickbutton_mouseDown(ByRef Sender As Object)
    
     On Error GoTo tickbutton_mouseDown_Error
         
-    If overlayWidget.SmoothSecondHand = True Then
-        overlayWidget.SmoothSecondHand = False
+    If overlayWidget.PointerAnimate = True Then
+        overlayWidget.PointerAnimate = False
         Sender.Widget.Alpha = Val(PzGOpacity) / 100
-        PzGSmoothSecondHand = "0"
+        PzGPointerAnimate = "0"
     Else
-        overlayWidget.SmoothSecondHand = True
+        overlayWidget.PointerAnimate = True
         Sender.Widget.Alpha = 0 ' sender is the referring control
-        PzGSmoothSecondHand = "1"
+        PzGPointerAnimate = "1"
         
     End If
     Sender.Widget.Refresh ' this removes the delay in the Button depressing
     
     fileToPlay = "lock.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    If PzGEnableSounds = "1" And fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
     
-    sPutINISetting "Software\PzOHMGauge", "smoothSecondHand", PzGSmoothSecondHand, PzGSettingsFile
+    sPutINISetting "Software\PzOHMGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
+    panzerPrefs.cmbTickSwitchPref.ListIndex = Val(PzGPointerAnimate)
     
    On Error GoTo 0
    Exit Sub
@@ -510,9 +511,9 @@ Private Sub gaugeForm_DblClick()
     
     If SHIFT_1 = True Then
         SHIFT_1 = False
-        Call ShellExecute(fAlpha.gaugeForm.hwnd, "Open", PzGOpenFile, vbNullString, App.path, 1)
+        Call ShellExecute(fAlpha.gaugeForm.hwnd, "Open", PzGOpenFile, vbNullString, App.Path, 1)
     Else
-        Call ShellExecute(fAlpha.gaugeForm.hwnd, "runas", thisCommand, vbNullString, App.path, 1)
+        Call ShellExecute(fAlpha.gaugeForm.hwnd, "runas", thisCommand, vbNullString, App.Path, 1)
     End If
 
     On Error GoTo 0

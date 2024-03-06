@@ -3412,7 +3412,7 @@ Private Sub btnSave_Click()
 '    PzGMainGaugeTimeZone = cmbMainGaugeTimeZone.ListIndex
 '    PzGMainDaylightSaving = cmbMainDaylightSaving.ListIndex
     
-    PzGSmoothSecondHand = cmbTickSwitchPref.ListIndex
+    PzGPointerAnimate = cmbTickSwitchPref.ListIndex
     PzGCurrentSensor = cmbCurrentSensor.ListIndex
     PzGSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
     PzGTemperatureScale = cmbTemperatureScale.ListIndex
@@ -3491,7 +3491,7 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzOHMGauge", "scrollWheelDirection", PzGScrollWheelDirection, PzGSettingsFile
                 
         sPutINISetting "Software\PzOHMGauge", "gaugeFunctions", PzGGaugeFunctions, PzGSettingsFile
-        sPutINISetting "Software\PzOHMGauge", "smoothSecondHand", PzGSmoothSecondHand, PzGSettingsFile
+        sPutINISetting "Software\PzOHMGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
         sPutINISetting "Software\PzOHMGauge", "samplingInterval", PzGSamplingInterval, PzGSettingsFile
         
         sPutINISetting "Software\PzStorageGauge", "currentSensor", PzGCurrentSensor, PzGSettingsFile
@@ -3740,7 +3740,7 @@ Private Sub adjustPrefsControls()
         
     ' txtBias.Text = tzDelta
 
-    cmbTickSwitchPref.ListIndex = Val(PzGSmoothSecondHand)
+    cmbTickSwitchPref.ListIndex = Val(PzGPointerAnimate)
     
     ' prefs combo matches stored current Sensor
     cmbCurrentSensor.ListIndex = Val(PzGCurrentSensor)
