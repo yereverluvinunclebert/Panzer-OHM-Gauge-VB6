@@ -2,7 +2,7 @@
  
   A FOSS OHM Gauge VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
  
- My current VB6/RC6 PSD program being worked upon now, about 92% complete, awaiting smooth rotation to the temperature pointer, handling of input from libre Hardware Monitor, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. This Panzer widget is based upon the Yahoo/Konfabulator widget of the same visual design and using very similar operation.
+ My current VB6/RC6 PSD program being worked upon now, about 95% complete, awaiting handling of input from alternative source libre Hardware Monitor, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. This Panzer widget is based upon the Yahoo/Konfabulator widget of the same visual design and using very similar operation.
 
  Why VB6? Well, with a 64 bit, modern-language improvement upgrade on the way with 100% compatible TwinBasic coupled with support for transparent PNGs via RC/Cairo, VB6 code has an amazing future.
 
