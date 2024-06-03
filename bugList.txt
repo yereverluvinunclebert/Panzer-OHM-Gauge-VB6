@@ -32,13 +32,14 @@ DONE
 ' prefs sensor controls added standard tooltips - done
 ' added isRunning code and APIs/vars to test for OHM.exe - done
 
+' added file selection code to the OHM location button - wip
+
 ' -oOo-
 
 TODO
 
-' balloon tooltip text in F as well as C
-
-' added file selection code to the OHM location button - wip
+' when gauge spawned spawn with position set as an offset to current gauge
+' spawn_1 & spawn_2 &c in the settings.ini opening stored drive type and position
 
 ' add vars for storing/reading and validating the full path to the OHM binary
 

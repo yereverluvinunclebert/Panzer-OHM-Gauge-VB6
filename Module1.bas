@@ -2336,6 +2336,8 @@ Public Sub makeProgramPreferencesAvailable()
         
         Call readPrefsPosition
         Call panzerPrefs.positionPrefsMonitor
+    Else
+        panzerPrefs.SetFocus
     End If
     
 
@@ -2840,13 +2842,13 @@ End Function
 ' ----------------------------------------------------------------
 Public Sub getgblSensorArray(ByRef thisArray() As String, ByRef gblSensorCount As Integer)
     
-    Dim strComputer As String
+    Dim strComputer As String: strComputer = vbNullString
     Dim objSWbemLocator As Object
     Dim objSWbemServices As Object
     Dim colItems As Object
     Dim objItem As Object
     Dim thisSensorCount As Integer: thisSensorCount = 0
-    Dim I As Integer
+    Dim I As Integer: I = 0
     
     On Error GoTo getGblSensorArray_Error
     

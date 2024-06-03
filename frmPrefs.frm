@@ -92,7 +92,7 @@ Begin VB.Form panzerPrefs
             Left            =   1995
             TabIndex        =   93
             ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
-            Top             =   5940
+            Top             =   5820
             Width           =   4020
          End
          Begin vb6projectCCRSlider.Slider sliSamplingInterval 
@@ -101,8 +101,8 @@ Begin VB.Form panzerPrefs
             TabIndex        =   155
             ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
             Top             =   4620
-            Width           =   3870
-            _ExtentX        =   6826
+            Width           =   4380
+            _ExtentX        =   7726
             _ExtentY        =   688
             Min             =   1
             Max             =   30
@@ -170,7 +170,7 @@ Begin VB.Form panzerPrefs
             Left            =   2025
             TabIndex        =   160
             Top             =   5400
-            Width           =   3810
+            Width           =   4230
          End
          Begin VB.Label lblWindowLevel 
             Caption         =   "Sampling Interval :"
@@ -185,7 +185,7 @@ Begin VB.Form panzerPrefs
             Caption         =   "15"
             Height          =   315
             Index           =   12
-            Left            =   3615
+            Left            =   3960
             TabIndex        =   158
             Top             =   5085
             Width           =   840
@@ -194,7 +194,7 @@ Begin VB.Form panzerPrefs
             Caption         =   "30"
             Height          =   315
             Index           =   11
-            Left            =   5385
+            Left            =   5970
             TabIndex        =   157
             Top             =   5085
             Width           =   405
@@ -242,7 +242,7 @@ Begin VB.Form panzerPrefs
             Left            =   960
             TabIndex        =   94
             Tag             =   "lblRefreshInterval"
-            Top             =   6045
+            Top             =   5925
             Width           =   1740
          End
          Begin VB.Label lblGeneral 
