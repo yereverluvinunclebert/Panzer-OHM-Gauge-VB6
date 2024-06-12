@@ -3774,7 +3774,8 @@ Private Sub adjustPrefsControls()
     txtDblClickCommand.Text = PzGDblClickCommand
     txtOpenFile.Text = PzGOpenFile
     txtDefaultEditor.Text = PzGDefaultEditor
-    
+    lblGitHub.Caption = "You can find the code for the Panzer OHM Gauge on github, visit by double-clicking this link https://github.com/yereverluvinunclebert/ Panzer-OHM-Gauge-VB6"
+  
      ' fonts tab
     If PzGPrefsFont <> vbNullString Then
         txtPrefsFont.Text = PzGPrefsFont
