@@ -1,6 +1,6 @@
 # Panzer-OHM-Gauge-VB6
  
-  A FOSS OHM Gauge VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
+  A FOSS OHM Gauge VB6 WoW64 Widget for Windows Vista, 7, 8 and 10/11+. There will also be a version for Reactos and XP, watch this space for the link. Also tested and running well on Linux and Mac os/X using Wine.
  
  My current VB6/RC6 PSD program being worked upon now, about 95% complete, awaiting handling of input from alternative source libre Hardware Monitor, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. This Panzer widget is based upon the Yahoo/Konfabulator widget of the same visual design and using very similar operation.
 
@@ -154,15 +154,26 @@ In time there will also be coreTemp and Speedfan versions of the same VB6 widget
  The above will be created automatically by the compiled program when run for the 
  first time.
  
- Uses just one OCX control extracted from Krools mega pack (slider). This is part 
- of Krools replacement for the whole of Microsoft Windows Common Controls found 
- in mscomctl.ocx. The slider control OCX file is shipped with this package.
+o Krool's replacement for the Microsoft Windows Common Controls found in
+mscomctl.ocx (slider) are replicated by the addition of one
+dedicated OCX file that are shipped with this package.
+
+During development only, this must be copied to C:\windows\syswow64 and should be registered.
+
+- CCRSlider.ocx
+
+Register this using regsvr32, ie. in a CMD window with administrator privileges.
+	
+	c:                          ! set device to boot drive with Windows
+	cd \windows\syswow64s	    ! change default folder to syswow64
+	regsvr32 CCRSlider.ocx	! register the ocx
+
+This will allow the custom controls to be accessible to the VB6 IDE
+at design time and the sliders will function as intended (if this ocx is
+not registered correctly then the relevant controls will be replaced by picture boxes).
+
+The above is only for development, for ordinary users, during runtime there is no need to do the above. The OCX will reside in the program folder. The program reference to this OCX is contained within the supplied resource file, Panzer OHM Gauge.RES. The reference to this file is already compiled into the binary. As long as the OCX is in the same folder as the binary the program will run without the need to register the OCX manually.
  
- * CCRSlider.ocx
- 
- This OCX will reside in the program folder. The program reference to this OCX is 
- contained within the supplied resource file Panzer CPU Gauge Gauge.RES. It is 
- compiled into the binary.
  
  * OLEGuids.tlb
  
