@@ -172,27 +172,16 @@ This will allow the custom controls to be accessible to the VB6 IDE
 at design time and the sliders will function as intended (if this ocx is
 not registered correctly then the relevant controls will be replaced by picture boxes).
 
-The above is only for development, for ordinary users, during runtime there is no need to do the above. The OCX will reside in the program folder. The program reference to this OCX is contained within the supplied resource file, Panzer OHM Gauge.RES. The reference to this file is already compiled into the binary. As long as the OCX is in the same folder as the binary the program will run without the need to register the OCX manually.
+![ccrslider](https://github.com/user-attachments/assets/b22e6b3e-e351-4d24-be90-ce44305b5f4f)
+
+If you are developing multiple widgets needing this ocx, the above only needs to be done once. 
+
+The above rigmarole is only for development. For ordinary users during runtime, there is no need to do the above. The OCX will reside in the program folder. The program reference to this OCX is contained within the supplied resource file, Panzer OHM Gauge.RES. The reference to this file is already compiled into the binary. As long as the OCX is in the same folder as the binary the program will run without the need to register the OCX manually.
  
- 
- * OLEGuids.tlb
- 
- This is a type library that defines types, object interfaces, and more specific 
- API definitions needed for COM interop / marshalling. It is only used at design 
- time (IDE). This is a Krool-modified version of the original .tlb from the 
- vbaccelerator website. The .tlb is compiled into the executable.
- For the compiled .exe this is NOT a dependency, only during design time.
- 
- From the command line, copy the tlb to a central location (system32 or wow64 
- folder) and register it.
- 
- COPY OLEGUIDS.TLB %SystemRoot%\System32\
- REGTLIB %SystemRoot%\System32\OLEGUIDS.TLB
- 
- In the VB6 IDE - project - references - browse - select the OLEGuids.tlb
  
 ![prefs-about](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/2349098d-f7df-4084-885e-383a58b87bac)
 
+Sample preference screen
 
  * SETUP.EXE - The program is currently distributed using setup2go, a very useful 
  and comprehensive installer program that builds a .exe installer. Youll have to 
@@ -215,7 +204,9 @@ The above is only for development, for ordinary users, during runtime there is n
  	Microsoft WMI Scripting V1.2 Library wbemdisp.tlb 
 	vbRichClient6  	- RC6Widgets (RC6Widgets.DLL)
                    	- RC6 (RC6.DLL)
- 
+
+ ![wmi](https://github.com/user-attachments/assets/bfc329ad-4ca4-4552-a05a-6f3ccc003269)
+
  
  LICENCE AGREEMENTS:
  
