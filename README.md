@@ -179,9 +179,9 @@ If you are developing multiple widgets needing this ocx, the above only needs to
 The above rigmarole is only for development. For ordinary users during runtime, there is no need to do the above. The OCX will reside in the program folder. The program reference to this OCX is contained within the supplied resource file, Panzer OHM Gauge.RES. The reference to this file is already compiled into the binary. As long as the OCX is in the same folder as the binary the program will run without the need to register the OCX manually.
  
  
-![prefs-about](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/2349098d-f7df-4084-885e-383a58b87bac)
+![ohmslider](https://github.com/user-attachments/assets/00fc914e-ea69-4649-8579-42e5a0185f57)
 
-Sample preference screen
+Sample preference screen showing CCR slider in place and operating
 
  * SETUP.EXE - The program is currently distributed using setup2go, a very useful 
  and comprehensive installer program that builds a .exe installer. Youll have to 
