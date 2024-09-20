@@ -139,7 +139,7 @@ In time there will also be coreTemp and Speedfan versions of the same VB6 widget
  * Uses the latest version of the RC6 Cairo framework from Olaf Schmidt.
  
  During development the RC6 components need to be registered. These scripts are 
- used to register. Run each by double-clicking on them.
+ used to register. Run each by double-clicking on them. They are in the BIN folder.
  
 	RegisterRC6inPlace.vbs
 	RegisterRC6WidgetsInPlace.vbs
