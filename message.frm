@@ -560,8 +560,8 @@ Public Property Let propButtonVal(ByVal newValue As Integer)
         
         ' .86 DAEB 06/06/2022 rDIConConfig.frm Add a sound to the msgbox for critical and exclamations? ting and belltoll.wav files
         fileToPlay = "ting.wav"
-        If fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-            PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+        If fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+            PlaySound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
         End If
     ElseIf mPropButtonVal >= 32 Then '    vbQuestion
         mPropButtonVal = mPropButtonVal - 32
@@ -572,8 +572,8 @@ Public Property Let propButtonVal(ByVal newValue As Integer)
         
         ' .86 DAEB 06/06/2022 rDIConConfig.frm Add a sound to the msgbox for critical and exclamations? ting and belltoll.wav files
         fileToPlay = "belltoll01.wav"
-        If fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-            PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+        If fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+            PlaySound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
         End If
     End If
 
@@ -675,7 +675,7 @@ Private Sub setMessageIconImagesLight(ByVal thisIconWidth As Long)
     
     On Error GoTo setMessageIconImagesLight_Error
     
-    resourcePath = App.path & "\resources\images"
+    resourcePath = App.Path & "\resources\images"
     
     If fFExists(resourcePath & "\windowsInformation" & thisIconWidth & ".jpg") Then Set picVBInformation.Picture = LoadPicture(resourcePath & "\windowsInformation" & thisIconWidth & ".jpg")
     If fFExists(resourcePath & "\windowsOrangeExclamation" & thisIconWidth & ".jpg") Then Set picVBExclamation.Picture = LoadPicture(resourcePath & "\windowsOrangeExclamation" & thisIconWidth & ".jpg")
@@ -695,3 +695,38 @@ setMessageIconImagesLight_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setMessageIconImagesLight of Form frmMessage"
 
 End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : IsVisible
+' Author    : beededea
+' Date      : 08/05/2023
+' Purpose   : calling a manual property to a form allows external checks to the form to
+'             determine whether it is loaded, without also activating the form automatically.
+'---------------------------------------------------------------------------------------
+'
+Public Property Get IsVisible() As Boolean
+    On Error GoTo IsVisible_Error
+
+    If Me.WindowState = vbNormal Then
+        IsVisible = Me.Visible
+    Else
+        IsVisible = False
+    End If
+    
+    On Error GoTo 0
+    Exit Property
+
+IsVisible_Error:
+
+    With Err
+         If .Number <> 0 Then
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure IsVisible of Form panzerPrefs"
+            Resume Next
+          End If
+    End With
+End Property
+
+
+
+
