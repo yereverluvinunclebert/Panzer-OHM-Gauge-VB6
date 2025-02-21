@@ -781,6 +781,9 @@ Private Sub tmrSampler_Timer()
             ' oldSDeg stored
             oldSDeg = SDeg
             
+            ' test for empty array or zero sensor count to handle (Error -2147217358 (Call cancelled ) in procedure getGblSensorArray, line 0)
+            If UBound(gblSensorArray) < LBound(gblSensorArray) Or gblSensorCount = 0 Then Exit Sub
+            
             ' get the list of sensors and the count
             Call getgblSensorArray(gblSensorArray(), gblSensorCount)
                 
@@ -851,7 +854,10 @@ End Sub
 ' ----------------------------------------------------------------
 Private Sub obtainTemperatures()
     On Error GoTo obtainTemperatures_Error
-    
+        
+        ' test for empty array or zero sensor count to handle (Error -2147217358 (Call cancelled ) in procedure getGblSensorArray, line 0)
+        If UBound(gblSensorArray) < LBound(gblSensorArray) Or gblSensorCount = 0 Then Exit Sub
+        
         ' get the list of sensors and the count
         Call getgblSensorArray(gblSensorArray(), gblSensorCount)
     
