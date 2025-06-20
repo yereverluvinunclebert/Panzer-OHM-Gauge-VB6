@@ -485,7 +485,9 @@ Private lstDevices(1, 25) As String
 Private lstDevicesListCount As Integer
 Public sAllDrives As String
 
-
+' vars to obtain the virtual (multi-monitor) width twips
+Public gblVirtualScreenHeightTwips As Long
+Public gblVirtualScreenWidthTwips As Long
 
 '---------------------------------------------------------------------------------------
 ' Procedure : fFExists
@@ -981,6 +983,9 @@ Public Sub addTargetFile(ByVal fieldValue As String, ByRef retFileName As String
     
     On Error Resume Next
     
+    ' fix default folder bug opening in wrong folder
+    dialogInitDir = App.Path
+        
     ' set the default folder to the existing reference
     If Not fieldValue = vbNullString Then
         If fFExists(fieldValue) Then
@@ -2062,14 +2067,17 @@ Public Sub determineScreenDimensions()
     'If debugflg = 1 Then msgbox "% sub determineScreenDimensions"
 
     ' only calling TwipsPerPixelX/Y functions once on startup
-    screenTwipsPerPixelX = fTwipsPerPixelX
-    screenTwipsPerPixelY = fTwipsPerPixelY
+    gblScreenTwipsPerPixelX = fTwipsPerPixelX
+    gblScreenTwipsPerPixelY = fTwipsPerPixelY
     
     screenHeightPixels = GetDeviceCaps(menuForm.hdc, VERTRES) ' we use the name of any form that we don't mind being loaded at this point
     screenWidthPixels = GetDeviceCaps(menuForm.hdc, HORZRES)
 
-    screenHeightTwips = screenHeightPixels * screenTwipsPerPixelY
-    screenWidthTwips = screenWidthPixels * screenTwipsPerPixelX
+    screenHeightTwips = screenHeightPixels * gblScreenTwipsPerPixelY
+    screenWidthTwips = screenWidthPixels * gblScreenTwipsPerPixelX
+    
+    gblVirtualScreenHeightTwips = fVirtualScreenHeight(False)
+    gblVirtualScreenWidthTwips = fVirtualScreenWidth(False)
     
     oldScreenHeightPixels = screenHeightPixels ' will be used to check for orientation changes
     oldScreenWidthPixels = screenWidthPixels
@@ -2203,8 +2211,8 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
     ' stop all VB6 timers in the prefs form
     
-    panzerPrefs.themeTimer.Enabled = False
-    panzerPrefs.positionTimer.Enabled = False
+    widgetPrefs.themeTimer.Enabled = False
+    widgetPrefs.positionTimer.Enabled = False
     
     ' stop all RC6 timers
     
@@ -2219,7 +2227,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
     ' unload the native VB6 forms
     
-    Unload panzerPrefs
+    Unload widgetPrefs
     Unload frmMessage
     Unload frmTimer
     Unload menuForm
@@ -2233,7 +2241,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
     ' remove all variable references to each form in turn
     
-    Set panzerPrefs = Nothing
+    Set widgetPrefs = Nothing
     Set frmMessage = Nothing
     Set frmTimer = Nothing
     Set menuForm = Nothing
@@ -2338,26 +2346,26 @@ Public Sub makeProgramPreferencesAvailable()
     
 '    If debugFlg = 1 Then
 '
-'        MsgBox "panzerPrefs.Visible " & panzerPrefs.Visible
-'        MsgBox "panzerPrefs.WindowState " & panzerPrefs.WindowState
+'        MsgBox "widgetPrefs.Visible " & widgetPrefs.Visible
+'        MsgBox "widgetPrefs.WindowState " & widgetPrefs.WindowState
 '
 '    End If
     
-    If panzerPrefs.IsVisible = False Then
-        panzerPrefs.Visible = True
-        panzerPrefs.Show  ' show it again
-        panzerPrefs.SetFocus
+    If widgetPrefs.IsVisible = False Then
+        widgetPrefs.Visible = True
+        widgetPrefs.Show  ' show it again
+        widgetPrefs.SetFocus
 
-        If panzerPrefs.WindowState = vbMinimized Then
-            panzerPrefs.WindowState = vbNormal
+        If widgetPrefs.WindowState = vbMinimized Then
+            widgetPrefs.WindowState = vbNormal
         End If
 
         ' set the current position of the utility according to previously stored positions
         
         Call readPrefsPosition
-        Call panzerPrefs.positionPrefsMonitor
+        Call widgetPrefs.positionPrefsMonitor
     Else
-        panzerPrefs.SetFocus
+        widgetPrefs.SetFocus
     End If
     
 
@@ -2387,15 +2395,15 @@ Public Sub readPrefsPosition()
         
 '        ' if a current location not stored then position to the middle of the screen
 '        If gblFormHighDpiXPosTwips <> "" Then
-'            panzerPrefs.Left = Val(gblFormHighDpiXPosTwips)
+'            widgetPrefs.Left = Val(gblFormHighDpiXPosTwips)
 '        Else
-'            panzerPrefs.Left = screenWidthTwips / 2 - panzerPrefs.Width / 2
+'            widgetPrefs.Left = screenWidthTwips / 2 - widgetPrefs.Width / 2
 '        End If
 '
 '        If gblFormHighDpiYPosTwips <> "" Then
-'            panzerPrefs.Top = Val(gblFormHighDpiYPosTwips)
+'            widgetPrefs.Top = Val(gblFormHighDpiYPosTwips)
 '        Else
-'            panzerPrefs.Top = Screen.Height / 2 - panzerPrefs.Height / 2
+'            widgetPrefs.Top = Screen.Height / 2 - widgetPrefs.Height / 2
 '        End If
     Else
         gblFormLowDpiXPosTwips = fGetINISetting("Software\PzOHMGauge", "formLowDpiXPosTwips", gblSettingsFile)
@@ -2403,15 +2411,15 @@ Public Sub readPrefsPosition()
         
 '        ' if a current location not stored then position to the middle of the screen
 '        If gblFormLowDpiXPosTwips <> "" Then
-'            panzerPrefs.Left = Val(gblFormLowDpiXPosTwips)
+'            widgetPrefs.Left = Val(gblFormLowDpiXPosTwips)
 '        Else
-'            panzerPrefs.Left = screenWidthTwips / 2 - panzerPrefs.Width / 2
+'            widgetPrefs.Left = screenWidthTwips / 2 - widgetPrefs.Width / 2
 '        End If
 '
 '        If gblFormLowDpiYPosTwips <> "" Then
-'            panzerPrefs.Top = Val(gblFormLowDpiYPosTwips)
+'            widgetPrefs.Top = Val(gblFormLowDpiYPosTwips)
 '        Else
-'            panzerPrefs.Top = Screen.Height / 2 - panzerPrefs.Height / 2
+'            widgetPrefs.Top = Screen.Height / 2 - widgetPrefs.Height / 2
 '        End If
     End If
    
@@ -2433,17 +2441,17 @@ Public Sub writePrefsPosition()
         
    On Error GoTo writePrefsPosition_Error
 
-    If panzerPrefs.WindowState = vbNormal Then ' when vbMinimised the value = -48000  !
+    If widgetPrefs.WindowState = vbNormal Then ' when vbMinimised the value = -48000  !
         If gblDpiAwareness = "1" Then
-            gblFormHighDpiXPosTwips = CStr(panzerPrefs.Left)
-            gblFormHighDpiYPosTwips = CStr(panzerPrefs.Top)
+            gblFormHighDpiXPosTwips = CStr(widgetPrefs.Left)
+            gblFormHighDpiYPosTwips = CStr(widgetPrefs.Top)
             
             ' now write those params to the toolSettings.ini
             sPutINISetting "Software\PzOHMGauge", "formHighDpiXPosTwips", gblFormHighDpiXPosTwips, gblSettingsFile
             sPutINISetting "Software\PzOHMGauge", "formHighDpiYPosTwips", gblFormHighDpiYPosTwips, gblSettingsFile
         Else
-            gblFormLowDpiXPosTwips = CStr(panzerPrefs.Left)
-            gblFormLowDpiYPosTwips = CStr(panzerPrefs.Top)
+            gblFormLowDpiXPosTwips = CStr(widgetPrefs.Left)
+            gblFormLowDpiYPosTwips = CStr(widgetPrefs.Top)
             
             ' now write those params to the toolSettings.ini
             sPutINISetting "Software\PzOHMGauge", "formLowDpiXPosTwips", gblFormLowDpiXPosTwips, gblSettingsFile
@@ -2458,7 +2466,7 @@ Public Sub writePrefsPosition()
 
 writePrefsPosition_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure writePrefsPosition of Form panzerPrefs"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure writePrefsPosition of Form widgetPrefs"
 End Sub
 
 
@@ -2529,13 +2537,13 @@ Public Sub lockWidget()
     
     If gblPreventDragging = "1" Then
         menuForm.mnuLockWidget.Checked = False
-        panzerPrefs.chkPreventDragging.Value = 0
+        widgetPrefs.chkPreventDragging.Value = 0
         gblPreventDragging = "0"
         overlayWidget.Locked = False
         fAlpha.gaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100
     Else
         menuForm.mnuLockWidget.Checked = True
-        panzerPrefs.chkPreventDragging.Value = 1
+        widgetPrefs.chkPreventDragging.Value = 1
         overlayWidget.Locked = True
         gblPreventDragging = "1"
         fAlpha.gaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
@@ -2673,7 +2681,7 @@ Public Sub hardRestart()
     If fFExists(thisCommand) Then
         
         ' run the selected program
-        Call ShellExecute(panzerPrefs.hwnd, "open", thisCommand, "Panzer OHM Gauge.exe prefs", "", 1)
+        Call ShellExecute(widgetPrefs.hwnd, "open", thisCommand, "Panzer OHM Gauge.exe prefs", "", 1)
     Else
         'answer = MsgBox(thisCommand & " is missing", vbOKOnly + vbExclamation)
         answerMsg = thisCommand & " is missing"
@@ -2820,7 +2828,7 @@ Public Function determineIconWidth(ByRef thisForm As Form, ByVal thisDynamicSizi
 
 determineIconWidth_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure determineIconWidth of Form panzerPrefs"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure determineIconWidth of Form widgetPrefs"
 
 End Function
 
