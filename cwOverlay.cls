@@ -17,7 +17,7 @@ Attribute VB_Exposed = False
 ' Author    : beededea
 ' Date      : 31/07/2023
 ' Purpose   : create a fully click-through Widget, which allows for all kind of
-'             things to render on top of the PSD-generated Widgets created in cfAlpha
+'             things to render on top of the PSD-generated Widgets created in cfGauge
 '---------------------------------------------------------------------------------------
 
 Option Explicit
@@ -25,7 +25,7 @@ Option Explicit
 Private temperatureCurrent As Long
 Private temperatureMax As Long
 
-'these Public Properties are set in the Parent (here, cfAlpha)
+'these Public Properties are set in the Parent (here, cfGauge)
 Public cCollOverlayImages As cCollection
 Public cxPerc As Single
 Public cyPerc As Single
@@ -61,15 +61,40 @@ Private mThisFace As Integer             ' property mThisFace
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : Class_Initialize
+' Procedure : initialisePrivateVars
+' Author    : beededea
+' Date      : 12/02/2025
+' Purpose   : initialise vars
+'---------------------------------------------------------------------------------------
+'
+Private Sub initialisePrivateVars()
+
+   On Error GoTo initialisePrivateVars_Error
+
+
+   ' pvtCurrentDateToDisplay = vbNullString
+
+   On Error GoTo 0
+   Exit Sub
+
+initialisePrivateVars_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure initialisePrivateVars of Class Module cwOverlay"
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : Class_Initialize for cwOverlay
 ' Author    : olaf schmidt
 ' Date      : 31/07/2023
-' Purpose   :
+' Purpose   : Constructor (Initialise) set the inital values of private vars, set up the timers
 '---------------------------------------------------------------------------------------
 '
 Private Sub Class_Initialize()
+    Dim intervalValue As Integer: intervalValue = 0
     
     On Error GoTo Class_Initialize_Error
+    
+    Call initialisePrivateVars
 
     Set W = Cairo.WidgetBase
         W.BackColor = -1  'we don't use any BackColor here, transparent
@@ -96,6 +121,7 @@ Class_Initialize_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Class_Initialize of Class Module cwOverlay"
 End Sub
+
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Widget
@@ -187,7 +213,7 @@ Public Property Let Ticking(ByVal newValue As Boolean)
 TickingLet_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Ticking of Class Module cwOverlay"
-End Property ' the earth Ticking flag
+End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : PointerAnimate
@@ -444,11 +470,12 @@ samplingIntervalLet_Error:
 End Property
 
 
+
 '---------------------------------------------------------------------------------------
-' Property : Locked
+' Property  : Locked
 ' Author    : beededea
 ' Date      : 17/05/2023
-' Purpose   :
+' Purpose   : property used to store/set the lock state to lock the widget in place, the actual locking is done elsewhere
 '---------------------------------------------------------------------------------------
 '
 Public Property Get Locked() As Boolean
@@ -461,13 +488,13 @@ Public Property Get Locked() As Boolean
 
 LockedGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwoverlay"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Locked
 ' Author    : beededea
 ' Date      : 17/05/2023
-' Purpose   :
+' Purpose   : property used to store/set the lock state to lock the widget in place, the actual locking is done elsewhere
 '---------------------------------------------------------------------------------------
 '
 Public Property Let Locked(ByVal newValue As Boolean)
@@ -480,14 +507,59 @@ Public Property Let Locked(ByVal newValue As Boolean)
 
 LockedLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwoverlay"
 End Property
+
+
+
+
+''---------------------------------------------------------------------------------------
+'' Procedure : MyOpacity
+'' Author    : beededea
+'' Date      : 17/05/2023
+'' Purpose   : property (by value) used to determine the opacity of elements in the overlay
+''---------------------------------------------------------------------------------------
+''
+'Public Property Let MyOpacity(ByVal newValue As Double)
+'   On Error GoTo MyOpacityLet_Error
+'
+'   If mMyOpacity <> newValue Then mMyOpacity = newValue Else Exit Property
+'
+'   On Error GoTo 0
+'   Exit Property
+'
+'MyOpacityLet_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MyOpacity of Class Module cwAbout"
+'End Property
+'
+''---------------------------------------------------------------------------------------
+'' Procedure : MyOpacity
+'' Author    : beededea
+'' Date      : 17/05/2023
+'' Purpose   : property (by value) used to determine the opacity of elements in the overlay
+''---------------------------------------------------------------------------------------
+''
+'Public Property Get MyOpacity() As Double
+'   On Error GoTo MyOpacityGet_Error
+'
+'   MyOpacity = mMyOpacity
+'
+'   On Error GoTo 0
+'   Exit Property
+'
+'MyOpacityGet_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MyOpacity of Class Module cwAbout"
+'End Property
+
+
 
 '---------------------------------------------------------------------------------------
 ' Property  : Hidden
 ' Author    : beededea
 ' Date      : 17/05/2023
-' Purpose   :
+' Purpose   : property to determine (by value)  the set the hidden value of the whole widget
 '---------------------------------------------------------------------------------------
 '
 Public Property Get Hidden() As Boolean
@@ -500,13 +572,17 @@ Public Property Get Hidden() As Boolean
 
 HiddenGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwoverlay"
 End Property
+
+    
+
+
 '---------------------------------------------------------------------------------------
 ' Property  : Hidden
 ' Author    : beededea
 ' Date      : 10/05/2023
-' Purpose   :
+' Purpose   : property to determine (by value)  the set the hidden value of the whole widget
 '---------------------------------------------------------------------------------------
 '
 Public Property Let Hidden(ByVal newValue As Boolean)
@@ -528,8 +604,10 @@ Public Property Let Hidden(ByVal newValue As Boolean)
 
 HiddenLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwoverlay"
 End Property
+
+
 '
 '---------------------------------------------------------------------------------------------
 ' Procedure : W_HitTest
@@ -593,7 +671,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     txtOHMCurrent = CStr(Int(temperatureCurrent))
     txtOHMMax = CStr(Int(temperatureMax))
 
-    For I = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfAlpha by duplicating collPSDNonUIElements.
+    For I = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfGauge by duplicating collPSDNonUIElements.
       Arr = cCollOverlayImages.ItemByIndex(I)
       Key = cCollOverlayImages.KeyByIndex(I)
       
@@ -960,4 +1038,5 @@ convert_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure convert, line " & Erl & "."
 
 End Function
+
 

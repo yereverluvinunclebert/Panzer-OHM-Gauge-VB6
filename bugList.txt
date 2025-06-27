@@ -34,9 +34,24 @@ DONE
 
 ' added file selection code to the OHM location button - wip
 
+' html help and images update
+' chm help built
+' test autostart
+' smooth pointer - flick/smooth
+
+' NEW GAUGE BUILT TO BETA STANDARDS 0.1
+' about.txt updated
+' menus and naming
+
+
 ' -oOo-
 
 TODO
+
+' links to various locations
+' github repo. update
+' icons 48x48
+' libre hardware monitor
 
 ' add a kelvin face
 
@@ -60,22 +75,13 @@ TODO
   ' when starting up, with no spawn param, checks to see if spawn_n sections exist
   ' if they do exist, then spawn one widget for each
   ' no other differences required
-  
+
 ' later on some control of spawned widgets could be added to the prefs
 
 ' the same code to be added to the Network widget
 ' the same code to be added to the Wireless widget
 
-
 ' add vars for storing/reading and validating the full path to the OHM binary
-
-' html help and images update
-' chm help built
-' test autostart
-
-' smooth pointer - flick/smooth
-
-' add second monitor - wip find cable!
 
 ' test usage of RC6 for monitor awareness - wip
 '      adjust Form Position on startup placing form onto Correct Monitor when placed off screen due to
