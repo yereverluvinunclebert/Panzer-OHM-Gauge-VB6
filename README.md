@@ -1,8 +1,8 @@
 # Panzer-OHM-Gauge-VB6
  
-  A FOSS OHM Gauge VB6 WoW64 Widget for Windows Vista, 7, 8 and 10/11+. There will also be a version for Reactos and XP, watch this space for the link. Also tested and running well on Linux and Mac os/X using Wine.
- 
- My current VB6/RC6 PSD program being worked upon now, about 95% complete, awaiting handling of input from alternative source libre Hardware Monitor, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. This Panzer widget is based upon the Yahoo/Konfabulator widget of the same visual design and using very similar operation.
+  A FOSS OHM Gauge VB6 WoW64 Widget for Windows Vista, 7, 8 and 10/11+. There will also be a version later for Reactos and XP, watch this space for the link. Also tested and running well on Linux and Mac os/X using Wine.
+
+One of my VB6/RC6 PSD WoW 64 designs, a work largely complete but as with all software some tasks to complete and unfound bugs to repair. However, it works, there is an installer and it does the job. i. New version always coming.  This VB6 widget is based upon the Yahoo/Konfabulator and Xwidgets of the same design. Those older widget platforms are now obsolete so I have migrated the code to a new development environment. Each exists now as a Windows binary. Look in the releases folder for an installer.
 
  Why VB6? Well, with a 64 bit, modern-language improvement upgrade on the way with 100% compatible TwinBasic coupled with support for transparent PNGs via RC/Cairo, VB6 code has an amazing future.
 
