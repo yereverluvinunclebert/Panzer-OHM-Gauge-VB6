@@ -189,8 +189,8 @@ Private Sub W_MouseDown(Button As Integer, Shift As Integer, ByVal x As Single, 
 '        fileToPlay = "till-quiet.wav"
 '    End If
 '
-    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        playSound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    If gblEnableSounds = "1" And fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+        playSound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
     
     tmrAboutFadeOut.Enabled = True
@@ -391,7 +391,7 @@ Private Sub Draw(ByRef CC As cCairoContext, ByVal dx As Single, ByVal dy As Sing
     W.SelectFontSettingsInto CC
     
     If gblDpiAwareness = "0" Then
-        CC.DrawText 350, 0, dx, dy - 275, "version " & App.Major & "." & App.Minor & "." & App.Revision & " Alpha", , , 2, True, , mMyOpacity
+        CC.DrawText 350, 0, dx, dy - 275, "version " & App.Major & "." & App.Minor & "." & App.Revision & " Beta", , , 2, True, , mMyOpacity
     Else
         
         #If TWINBASIC Then
@@ -399,7 +399,7 @@ Private Sub Draw(ByRef CC As cCairoContext, ByVal dx As Single, ByVal dy As Sing
         #Else
             CC.DrawText 168, -202, dx, dy, "VB6", , , 2, True, , mMyOpacity
         #End If
-        CC.DrawText 350, 0, dx, dy - 1020, "version " & App.Major & "." & App.Minor & "." & App.Revision & " Alpha", , , 2, True, , mMyOpacity
+        CC.DrawText 350, 0, dx, dy - 1020, "version " & App.Major & "." & App.Minor & "." & App.Revision & " Beta", , , 2, True, , mMyOpacity
         
     End If
     W.Refresh

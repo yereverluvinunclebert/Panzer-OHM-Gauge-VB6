@@ -36,7 +36,7 @@ Begin VB.Form menuForm
          Caption         =   ""
       End
       Begin VB.Menu mnuHelpSplash 
-         Caption         =   "Panzer OHM Gauge Help ..."
+         Caption         =   "Panzer OHM Gauge One-Page Help ..."
       End
       Begin VB.Menu mnuOnline 
          Caption         =   "Online Help and other options ..."
