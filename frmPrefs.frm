@@ -12,249 +12,6 @@ Begin VB.Form widgetPrefs
    ScaleMode       =   0  'User
    ScaleWidth      =   8880
    Visible         =   0   'False
-   Begin VB.Frame fraGeneral 
-      Caption         =   "General"
-      ForeColor       =   &H80000008&
-      Height          =   7275
-      Left            =   300
-      TabIndex        =   162
-      Top             =   1410
-      Visible         =   0   'False
-      Width           =   7995
-      Begin VB.Frame fraGeneralInner 
-         BorderStyle     =   0  'None
-         Height          =   6750
-         Left            =   465
-         TabIndex        =   163
-         Top             =   300
-         Width           =   6750
-         Begin VB.CheckBox chkGenStartup 
-            Caption         =   "Run the OHM Widget at Windows Startup "
-            Height          =   465
-            Left            =   1995
-            TabIndex        =   170
-            ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
-            Top             =   5820
-            Width           =   4020
-         End
-         Begin VB.ComboBox cmbTickSwitchPref 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":25CA
-            Left            =   2010
-            List            =   "frmPrefs.frx":25CC
-            Style           =   2  'Dropdown List
-            TabIndex        =   169
-            Top             =   975
-            Width           =   4095
-         End
-         Begin VB.CheckBox chkGaugeFunctions 
-            Caption         =   "Pointer operation toggle *"
-            Height          =   225
-            Left            =   1995
-            TabIndex        =   168
-            ToolTipText     =   "When checked this box enables the pointer. That's it!"
-            Top             =   180
-            Width           =   3405
-         End
-         Begin VB.ComboBox cmbCurrentSensor 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":25CE
-            Left            =   2025
-            List            =   "frmPrefs.frx":25D0
-            Style           =   2  'Dropdown List
-            TabIndex        =   167
-            Top             =   1950
-            Width           =   4095
-         End
-         Begin VB.ComboBox cmbTemperatureScale 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":25D2
-            Left            =   2010
-            List            =   "frmPrefs.frx":25D4
-            Style           =   2  'Dropdown List
-            TabIndex        =   166
-            Top             =   4125
-            Width           =   1740
-         End
-         Begin VB.CommandButton btnSelectMonitor 
-            Caption         =   "..."
-            Height          =   315
-            Left            =   6165
-            Style           =   1  'Graphical
-            TabIndex        =   165
-            ToolTipText     =   "Press to select a target file for OHM."
-            Top             =   3015
-            Width           =   315
-         End
-         Begin VB.TextBox txtMonitoringProgram 
-            Height          =   315
-            Left            =   2010
-            TabIndex        =   164
-            Top             =   3000
-            Width           =   4095
-         End
-         Begin vb6projectCCRSlider.Slider sliSamplingInterval 
-            Height          =   390
-            Left            =   1890
-            TabIndex        =   171
-            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   4620
-            Width           =   4380
-            _ExtentX        =   7726
-            _ExtentY        =   688
-            Min             =   1
-            Max             =   30
-            Value           =   20
-            SelStart        =   20
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "When checked this box enables the pointer. *"
-            Height          =   660
-            Index           =   2
-            Left            =   2025
-            TabIndex        =   187
-            Tag             =   "lblEnableSoundsDesc"
-            Top             =   525
-            Width           =   3615
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Auto Start :"
-            Height          =   375
-            Index           =   11
-            Left            =   960
-            TabIndex        =   186
-            Tag             =   "lblRefreshInterval"
-            Top             =   5925
-            Width           =   1740
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Gauge Functions :"
-            Height          =   315
-            Index           =   6
-            Left            =   510
-            TabIndex        =   185
-            Top             =   165
-            Width           =   1320
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Smooth Movement :"
-            Height          =   480
-            Index           =   3
-            Left            =   375
-            TabIndex        =   184
-            Top             =   1035
-            Width           =   1605
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "The pointer can be set to smooth or flick, the smooth movement uses more CPU."
-            Height          =   660
-            Index           =   9
-            Left            =   2025
-            TabIndex        =   183
-            Top             =   1410
-            Width           =   3810
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "1"
-            Height          =   315
-            Index           =   16
-            Left            =   2070
-            TabIndex        =   182
-            Top             =   5085
-            Width           =   345
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "30"
-            Height          =   315
-            Index           =   15
-            Left            =   5970
-            TabIndex        =   181
-            Top             =   5085
-            Width           =   405
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "15"
-            Height          =   315
-            Index           =   12
-            Left            =   3960
-            TabIndex        =   180
-            Top             =   5085
-            Width           =   840
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Sampling Interval :"
-            Height          =   315
-            Index           =   13
-            Left            =   495
-            TabIndex        =   179
-            Top             =   4680
-            Width           =   1410
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Adjust to determine gauge sampling frequency (seconds). *"
-            Height          =   600
-            Index           =   14
-            Left            =   2025
-            TabIndex        =   178
-            Top             =   5400
-            Width           =   4230
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Sensor to Monitor :"
-            Height          =   480
-            Index           =   4
-            Left            =   555
-            TabIndex        =   177
-            Top             =   2010
-            Width           =   1440
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Select the sensor to monitor here or by using the middle button on the gauge surround. *"
-            Height          =   660
-            Index           =   1
-            Left            =   2040
-            TabIndex        =   176
-            Top             =   2400
-            Width           =   3810
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Temperature Scale :"
-            Height          =   480
-            Index           =   5
-            Left            =   360
-            TabIndex        =   175
-            Top             =   4185
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Monitoring Program :"
-            Height          =   300
-            Index           =   7
-            Left            =   300
-            TabIndex        =   174
-            Top             =   3030
-            Width           =   1815
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "The location of your temp-monitoring software. Folder+ program name: "
-            Height          =   510
-            Index           =   8
-            Left            =   2010
-            TabIndex        =   173
-            Top             =   3450
-            Width           =   4245
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Select Celsius / Fahrenheit"
-            Height          =   480
-            Index           =   10
-            Left            =   3855
-            TabIndex        =   172
-            Top             =   4170
-            Width           =   1980
-         End
-      End
-   End
    Begin VB.Timer tmrPrefsMonitorSaveHeight 
       Interval        =   5000
       Left            =   -90
@@ -284,7 +41,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgDevelopment 
          Height          =   600
          Left            =   150
-         Picture         =   "frmPrefs.frx":25D6
+         Picture         =   "frmPrefs.frx":25CA
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -292,7 +49,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgDevelopmentClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":2B8E
+         Picture         =   "frmPrefs.frx":2B82
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -332,7 +89,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgAbout 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":2F14
+         Picture         =   "frmPrefs.frx":2F08
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -340,7 +97,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgAboutClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":349C
+         Picture         =   "frmPrefs.frx":3490
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -365,7 +122,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgConfig 
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":3987
+         Picture         =   "frmPrefs.frx":397B
          Stretch         =   -1  'True
          Top             =   240
          Width           =   600
@@ -373,7 +130,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgConfigClicked 
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":3F66
+         Picture         =   "frmPrefs.frx":3F5A
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -398,7 +155,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgPosition 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":446B
+         Picture         =   "frmPrefs.frx":445F
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -406,7 +163,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgPositionClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":4A3C
+         Picture         =   "frmPrefs.frx":4A30
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -451,7 +208,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgSounds 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":4DDA
+         Picture         =   "frmPrefs.frx":4DCE
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -459,7 +216,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgSoundsClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":5399
+         Picture         =   "frmPrefs.frx":538D
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -499,7 +256,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgWindow 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":5869
+         Picture         =   "frmPrefs.frx":585D
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -507,7 +264,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgWindowClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":5D33
+         Picture         =   "frmPrefs.frx":5D27
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -531,7 +288,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgFonts 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":60DF
+         Picture         =   "frmPrefs.frx":60D3
          Stretch         =   -1  'True
          Top             =   195
          Width           =   600
@@ -539,7 +296,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgFontsClicked 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":6635
+         Picture         =   "frmPrefs.frx":6629
          Stretch         =   -1  'True
          Top             =   195
          Width           =   600
@@ -555,7 +312,7 @@ Begin VB.Form widgetPrefs
          Appearance      =   0  'Flat
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":6ACE
+         Picture         =   "frmPrefs.frx":6AC2
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -575,6 +332,269 @@ Begin VB.Form widgetPrefs
          Stretch         =   -1  'True
          Top             =   240
          Width           =   600
+      End
+   End
+   Begin VB.Frame fraGeneral 
+      Caption         =   "General"
+      ForeColor       =   &H80000008&
+      Height          =   7275
+      Left            =   300
+      TabIndex        =   162
+      Top             =   1410
+      Visible         =   0   'False
+      Width           =   7995
+      Begin VB.Frame fraGeneralInner 
+         BorderStyle     =   0  'None
+         Height          =   6750
+         Left            =   465
+         TabIndex        =   163
+         Top             =   300
+         Width           =   6750
+         Begin VB.ComboBox cmbMonitoringProgramIndex 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":810C
+            Left            =   2025
+            List            =   "frmPrefs.frx":810E
+            Style           =   2  'Dropdown List
+            TabIndex        =   188
+            Top             =   3000
+            Width           =   4095
+         End
+         Begin VB.CheckBox chkGenStartup 
+            Caption         =   "Run the OHM Widget at Windows Startup "
+            Height          =   465
+            Left            =   1995
+            TabIndex        =   170
+            ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
+            Top             =   6435
+            Width           =   4020
+         End
+         Begin VB.ComboBox cmbTickSwitchPref 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":8110
+            Left            =   2010
+            List            =   "frmPrefs.frx":8112
+            Style           =   2  'Dropdown List
+            TabIndex        =   169
+            Top             =   975
+            Width           =   4095
+         End
+         Begin VB.CheckBox chkGaugeFunctions 
+            Caption         =   "Pointer operation toggle *"
+            Height          =   225
+            Left            =   1995
+            TabIndex        =   168
+            ToolTipText     =   "When checked this box enables the pointer. That's it!"
+            Top             =   180
+            Width           =   3405
+         End
+         Begin VB.ComboBox cmbCurrentSensor 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":8114
+            Left            =   2025
+            List            =   "frmPrefs.frx":8116
+            Style           =   2  'Dropdown List
+            TabIndex        =   167
+            Top             =   1950
+            Width           =   4095
+         End
+         Begin VB.ComboBox cmbTemperatureScale 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":8118
+            Left            =   2010
+            List            =   "frmPrefs.frx":811A
+            Style           =   2  'Dropdown List
+            TabIndex        =   166
+            Top             =   4740
+            Width           =   1740
+         End
+         Begin VB.CommandButton btnSelectMonitor 
+            Caption         =   "..."
+            Height          =   315
+            Left            =   5790
+            Style           =   1  'Graphical
+            TabIndex        =   165
+            ToolTipText     =   "Press to select a target file for OHM."
+            Top             =   3615
+            Width           =   315
+         End
+         Begin VB.TextBox txtMonitoringProgram 
+            Height          =   315
+            Left            =   2010
+            TabIndex        =   164
+            Top             =   3615
+            Width           =   3855
+         End
+         Begin vb6projectCCRSlider.Slider sliSamplingInterval 
+            Height          =   390
+            Left            =   1890
+            TabIndex        =   171
+            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
+            Top             =   5235
+            Width           =   4380
+            _ExtentX        =   7726
+            _ExtentY        =   688
+            Min             =   1
+            Max             =   30
+            Value           =   20
+            SelStart        =   20
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Monitoring Program :"
+            Height          =   345
+            Index           =   12
+            Left            =   315
+            TabIndex        =   189
+            Top             =   3060
+            Width           =   1620
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "When checked this box enables the pointer. *"
+            Height          =   660
+            Index           =   2
+            Left            =   2025
+            TabIndex        =   187
+            Tag             =   "lblEnableSoundsDesc"
+            Top             =   525
+            Width           =   3615
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Auto Start :"
+            Height          =   375
+            Index           =   11
+            Left            =   960
+            TabIndex        =   186
+            Tag             =   "lblRefreshInterval"
+            Top             =   6540
+            Width           =   1740
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Gauge Functions :"
+            Height          =   315
+            Index           =   6
+            Left            =   510
+            TabIndex        =   185
+            Top             =   165
+            Width           =   1320
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Smooth Movement :"
+            Height          =   480
+            Index           =   3
+            Left            =   375
+            TabIndex        =   184
+            Top             =   1035
+            Width           =   1605
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "The pointer can be set to smooth or flick, the smooth movement uses more CPU."
+            Height          =   660
+            Index           =   9
+            Left            =   2025
+            TabIndex        =   183
+            Top             =   1410
+            Width           =   3810
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "1"
+            Height          =   315
+            Index           =   16
+            Left            =   2070
+            TabIndex        =   182
+            Top             =   5700
+            Width           =   345
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "30"
+            Height          =   315
+            Index           =   15
+            Left            =   5970
+            TabIndex        =   181
+            Top             =   5700
+            Width           =   405
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "15"
+            Height          =   315
+            Index           =   12
+            Left            =   3960
+            TabIndex        =   180
+            Top             =   5700
+            Width           =   840
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Sampling Interval :"
+            Height          =   315
+            Index           =   13
+            Left            =   495
+            TabIndex        =   179
+            Top             =   5295
+            Width           =   1410
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Adjust to determine gauge sampling frequency (seconds). *"
+            Height          =   600
+            Index           =   14
+            Left            =   2025
+            TabIndex        =   178
+            Top             =   6015
+            Width           =   4230
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Sensor to Monitor :"
+            Height          =   480
+            Index           =   4
+            Left            =   555
+            TabIndex        =   177
+            Top             =   2010
+            Width           =   1440
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Select the sensor to monitor here or by using the middle button on the gauge surround. *"
+            Height          =   660
+            Index           =   1
+            Left            =   2040
+            TabIndex        =   176
+            Top             =   2400
+            Width           =   3810
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Temperature Scale :"
+            Height          =   480
+            Index           =   5
+            Left            =   360
+            TabIndex        =   175
+            Top             =   4800
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Alignment       =   2  'Center
+            Caption         =   "Monitoring Program Location :"
+            Height          =   570
+            Index           =   7
+            Left            =   300
+            TabIndex        =   174
+            Top             =   3645
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "The location of your temperature monitoring software (Folder+ program name)"
+            Height          =   510
+            Index           =   8
+            Left            =   2010
+            TabIndex        =   173
+            Top             =   4005
+            Width           =   4245
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Select Celsius / Fahrenheit"
+            Height          =   480
+            Index           =   10
+            Left            =   3855
+            TabIndex        =   172
+            Top             =   4785
+            Width           =   1980
+         End
       End
    End
    Begin VB.Frame fraAbout 
@@ -640,7 +660,7 @@ Begin VB.Form widgetPrefs
          MultiLine       =   -1  'True
          ScrollBars      =   2  'Vertical
          TabIndex        =   101
-         Text            =   "frmPrefs.frx":8118
+         Text            =   "frmPrefs.frx":811C
          Top             =   2205
          Width           =   7935
       End
@@ -918,52 +938,6 @@ Begin VB.Form widgetPrefs
          Width           =   2655
       End
    End
-   Begin VB.Frame fraSounds 
-      Caption         =   "Sounds"
-      Height          =   2280
-      Left            =   855
-      TabIndex        =   13
-      Top             =   1230
-      Visible         =   0   'False
-      Width           =   7965
-      Begin VB.Frame fraSoundsInner 
-         BorderStyle     =   0  'None
-         Height          =   1875
-         Left            =   765
-         TabIndex        =   24
-         Top             =   285
-         Width           =   6420
-         Begin VB.CheckBox chkEnableSounds 
-            Caption         =   "Enable ALL sounds for the whole widget."
-            Height          =   225
-            Left            =   1485
-            TabIndex        =   34
-            ToolTipText     =   "Check this box to enable or disable all of the sounds used during any animation on the main screen."
-            Top             =   285
-            Width           =   4485
-         End
-         Begin VB.Label lblSoundsTab 
-            Caption         =   "Determine the sound of UI elements, clock tick and chiming volumes. Set the overall volume to loud or quiet."
-            Height          =   540
-            Index           =   4
-            Left            =   885
-            TabIndex        =   139
-            Tag             =   "lblSharedInputFile"
-            Top             =   750
-            Width           =   4680
-         End
-         Begin VB.Label lblSoundsTab 
-            Caption         =   "Audio :"
-            Height          =   255
-            Index           =   3
-            Left            =   885
-            TabIndex        =   85
-            Tag             =   "lblSharedInputFile"
-            Top             =   285
-            Width           =   765
-         End
-      End
-   End
    Begin VB.Frame fraConfig 
       Caption         =   "Configuration"
       Height          =   8145
@@ -1108,7 +1082,7 @@ Begin VB.Form widgetPrefs
             Width           =   2490
          End
          Begin VB.Label lblConfiguration 
-            Caption         =   $"frmPrefs.frx":90CF
+            Caption         =   $"frmPrefs.frx":90D3
             Height          =   915
             Index           =   0
             Left            =   1980
@@ -1210,6 +1184,52 @@ Begin VB.Form widgetPrefs
          End
       End
    End
+   Begin VB.Frame fraSounds 
+      Caption         =   "Sounds"
+      Height          =   2280
+      Left            =   855
+      TabIndex        =   13
+      Top             =   1230
+      Visible         =   0   'False
+      Width           =   7965
+      Begin VB.Frame fraSoundsInner 
+         BorderStyle     =   0  'None
+         Height          =   1875
+         Left            =   765
+         TabIndex        =   24
+         Top             =   285
+         Width           =   6420
+         Begin VB.CheckBox chkEnableSounds 
+            Caption         =   "Enable ALL sounds for the whole widget."
+            Height          =   225
+            Left            =   1485
+            TabIndex        =   34
+            ToolTipText     =   "Check this box to enable or disable all of the sounds used during any animation on the main screen."
+            Top             =   285
+            Width           =   4485
+         End
+         Begin VB.Label lblSoundsTab 
+            Caption         =   "Determine the sound of UI elements, clock tick and chiming volumes. Set the overall volume to loud or quiet."
+            Height          =   540
+            Index           =   4
+            Left            =   885
+            TabIndex        =   139
+            Tag             =   "lblSharedInputFile"
+            Top             =   750
+            Width           =   4680
+         End
+         Begin VB.Label lblSoundsTab 
+            Caption         =   "Audio :"
+            Height          =   255
+            Index           =   3
+            Left            =   885
+            TabIndex        =   85
+            Tag             =   "lblSharedInputFile"
+            Top             =   285
+            Width           =   765
+         End
+      End
+   End
    Begin VB.Frame fraFonts 
       Caption         =   "Fonts"
       Height          =   6195
@@ -1299,7 +1319,7 @@ Begin VB.Form widgetPrefs
             Width           =   3285
          End
          Begin VB.Label lblFontsTab 
-            Caption         =   $"frmPrefs.frx":9183
+            Caption         =   $"frmPrefs.frx":9187
             Height          =   1710
             Index           =   0
             Left            =   1680
@@ -1475,7 +1495,7 @@ Begin VB.Form widgetPrefs
                Width           =   720
             End
             Begin VB.Label lblWindowLevel 
-               Caption         =   $"frmPrefs.frx":92C1
+               Caption         =   $"frmPrefs.frx":92C5
                Height          =   975
                Index           =   1
                Left            =   855
@@ -1511,7 +1531,7 @@ Begin VB.Form widgetPrefs
             Width           =   1830
          End
          Begin VB.Label lblWindowLevel 
-            Caption         =   $"frmPrefs.frx":9364
+            Caption         =   $"frmPrefs.frx":9368
             Height          =   1140
             Index           =   10
             Left            =   2235
@@ -1634,7 +1654,7 @@ Begin VB.Form widgetPrefs
                Width           =   3660
             End
             Begin VB.Label lblGitHub 
-               Caption         =   $"frmPrefs.frx":947B
+               Caption         =   $"frmPrefs.frx":947F
                ForeColor       =   &H8000000D&
                Height          =   915
                Left            =   1560
@@ -1644,7 +1664,7 @@ Begin VB.Form widgetPrefs
                Width           =   4935
             End
             Begin VB.Label lblDebug 
-               Caption         =   $"frmPrefs.frx":9542
+               Caption         =   $"frmPrefs.frx":9546
                Height          =   930
                Index           =   9
                Left            =   1545
@@ -1691,9 +1711,9 @@ Begin VB.Form widgetPrefs
          End
          Begin VB.ComboBox cmbDebug 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":95E6
+            ItemData        =   "frmPrefs.frx":95EA
             Left            =   1530
-            List            =   "frmPrefs.frx":95E8
+            List            =   "frmPrefs.frx":95EC
             Style           =   2  'Dropdown List
             TabIndex        =   46
             ToolTipText     =   "Choose to set debug mode."
@@ -1952,7 +1972,7 @@ Begin VB.Form widgetPrefs
             Width           =   2115
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":95EA
+            Caption         =   $"frmPrefs.frx":95EE
             Height          =   3435
             Index           =   12
             Left            =   5145
@@ -1972,7 +1992,7 @@ Begin VB.Form widgetPrefs
             Width           =   2040
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":97BC
+            Caption         =   $"frmPrefs.frx":97C0
             Height          =   705
             Index           =   10
             Left            =   2250
@@ -1992,7 +2012,7 @@ Begin VB.Form widgetPrefs
             Width           =   2355
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":985B
+            Caption         =   $"frmPrefs.frx":985F
             Height          =   3045
             Index           =   6
             Left            =   2265
@@ -2155,9 +2175,7 @@ Private pCmbWidgetPositionBalloonTooltip As String
 Private pCmbWidgetLandscapeBalloonTooltip As String
 Private pCmbWidgetPortraitBalloonTooltip As String
 Private pCmbDebugBalloonTooltip As String
-
-
-
+Private pCmbMonitoringProgramIndex As String
 
 Private mIsLoaded As Boolean ' property
 Private mGaugeSize As Single   ' property
@@ -2195,17 +2213,6 @@ End Sub
 
 
 
-
-
-
-
-
-Private Sub cmbSecondaryDaylightSaving_Change()
-
-End Sub
-
-
-
 '---------------------------------------------------------------------------------------
 ' Procedure : btnSelectMonitor_Click
 ' Author    : beededea
@@ -2219,11 +2226,13 @@ Private Sub btnSelectMonitor_Click()
     Dim answerMsg As String: answerMsg = vbNullString
 
     On Error GoTo btnSelectMonitor_Click_Error
+    
+    btnSave.Enabled = True ' enable the save button
 
     Call addTargetFile(txtDefaultEditor.Text, retFileName)
     
     If retFileName <> vbNullString Then
-        txtDefaultEditor.Text = retFileName ' strips the buffered bit, leaving just the filename
+        txtMonitoringProgram.Text = retFileName ' strips the buffered bit, leaving just the filename
     End If
     
     If retFileName = vbNullString Then
@@ -2242,7 +2251,7 @@ Private Sub btnSelectMonitor_Click()
         Open retFileName For Output As #1
         Close #1
     End If
-
+    
     On Error GoTo 0
     Exit Sub
 
@@ -2281,6 +2290,31 @@ cmbCurrentSensor_Click_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure cmbCurrentSensor_Click, line " & Erl & "."
 
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : cmbMonitoringProgramIndex_Click
+' Author    : beededea
+' Date      : 29/06/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub cmbMonitoringProgramIndex_Click()
+    
+   On Error GoTo cmbMonitoringProgramIndex_Click_Error
+
+    btnSave.Enabled = True ' enable the save button
+    gblMonitoringProgramIndex = cmbMonitoringProgramIndex.ListIndex
+    sPutINISetting "Software\PzOHMGauge", "monitoringProgramIndex", gblMonitoringProgramIndex, gblSettingsFile
+    
+    'overlayWidget.monitoringProgram = cmbMonitoringProgramIndex.ListIndex
+
+   On Error GoTo 0
+   Exit Sub
+
+cmbMonitoringProgramIndex_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure cmbMonitoringProgramIndex_Click of Form widgetPrefs"
 End Sub
 
 ' ----------------------------------------------------------------
@@ -4092,6 +4126,9 @@ Private Sub btnSave_Click()
     gblSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
     gblTemperatureScale = cmbTemperatureScale.ListIndex
     gblMonitoringProgram = txtMonitoringProgram.Text
+    gblMonitoringProgramIndex = CStr(cmbMonitoringProgramIndex.ListIndex)
+    
+    
     
     ' sounds
     gblEnableSounds = CStr(chkEnableSounds.Value)
@@ -4152,7 +4189,8 @@ Private Sub btnSave_Click()
     gblIgnoreMouse = CStr(chkIgnoreMouse.Value)
     
     gblMultiMonitorResize = CStr(cmbMultiMonitorResize.ListIndex)
-     
+    
+
             
     If gblStartup = "1" Then
         Call writeRegistry(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PanzerOHMGauge", """" & App.Path & "\" & "Panzer-OHM-Gauge-VB6.exe""")
@@ -4179,9 +4217,10 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzOHMGauge", "pointerAnimate", gblPointerAnimate, gblSettingsFile
         sPutINISetting "Software\PzOHMGauge", "samplingInterval", gblSamplingInterval, gblSettingsFile
         
-        sPutINISetting "Software\PzStorageGauge", "currentSensor", gblCurrentSensor, gblSettingsFile
-        sPutINISetting "Software\PzStorageGauge", "temperatureScale", gblTemperatureScale, gblSettingsFile
-        sPutINISetting "Software\PzStorageGauge", "monitoringProgram", gblMonitoringProgram, gblSettingsFile
+        sPutINISetting "Software\PzOHMGauge", "currentSensor", gblCurrentSensor, gblSettingsFile
+        sPutINISetting "Software\PzOHMGauge", "temperatureScale", gblTemperatureScale, gblSettingsFile
+        sPutINISetting "Software\PzOHMGauge", "monitoringProgram", gblMonitoringProgram, gblSettingsFile
+        sPutINISetting "Software\PzOHMGauge", "monitoringProgramIndex", gblMonitoringProgramIndex, gblSettingsFile
         
               
         sPutINISetting "Software\PzOHMGauge", "aspectHidden", gblAspectHidden, gblSettingsFile
@@ -4476,12 +4515,13 @@ Private Sub adjustPrefsControls(Optional ByVal restartState As Boolean)
     ' general tab
     chkGaugeFunctions.Value = Val(gblGaugeFunctions)
     chkGenStartup.Value = Val(gblStartup)
-            
+    cmbTemperatureScale.ListIndex = Val(gblTemperatureScale)
     cmbTickSwitchPref.ListIndex = Val(gblPointerAnimate)
     
     ' prefs combo matches stored current Sensor
     cmbCurrentSensor.ListIndex = Val(gblCurrentSensor)
-    cmbTemperatureScale.ListIndex = Val(gblTemperatureScale)
+
+    cmbMonitoringProgramIndex.ListIndex = Val(gblMonitoringProgramIndex)
     txtMonitoringProgram.Text = gblMonitoringProgram
     
     sliSamplingInterval = Val(gblSamplingInterval)
@@ -4618,8 +4658,6 @@ Private Sub adjustPrefsControls(Optional ByVal restartState As Boolean)
         lblWindowLevel(11).Visible = False
     End If
     
-    ' ' fGauge.RotateBusyTimer = True
-    
    On Error GoTo 0
    Exit Sub
 
@@ -4743,7 +4781,11 @@ Private Sub populatePrefsComboBoxes()
     cmbTemperatureScale.AddItem "fahrenheit", 1
     cmbTemperatureScale.ItemData(1) = 1
 
-    
+    cmbMonitoringProgramIndex.AddItem "Open Hardware Monitor", 0
+    cmbMonitoringProgramIndex.ItemData(0) = 0
+    cmbMonitoringProgramIndex.AddItem "Libre Hardware Monitor", 1
+    cmbMonitoringProgramIndex.ItemData(1) = 1
+
     On Error GoTo 0
     Exit Sub
 

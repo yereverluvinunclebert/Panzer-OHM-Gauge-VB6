@@ -306,6 +306,7 @@ Public gblSamplingInterval As String
 Public gblCurrentSensor As String
 Public gblTemperatureScale As String
 Public gblMonitoringProgram As String
+Public gblMonitoringProgramIndex As String
 
 ' config
 
@@ -2778,13 +2779,20 @@ Public Sub getgblSensorArray(ByRef thisArray() As String, ByRef gblSensorCount A
     Dim objItem As Object
     Dim thisSensorCount As Integer: thisSensorCount = 0
     Dim I As Integer: I = 0
+    Dim WMIRoot As String: WMIRoot = ""
     
     On Error GoTo getGblSensorArray_Error
     
     strComputer = "."  ' localhost
     
+    If gblMonitoringProgramIndex = "0" Then
+        WMIRoot = "root\OpenHardwareMonitor"
+    Else
+        WMIRoot = "root\LibreHardwareMonitor"
+    End If
+    
     Set objSWbemLocator = CreateObject("WbemScripting.SWbemLocator")
-    Set objSWbemServices = objSWbemLocator.ConnectServer(strComputer, "root\OpenHardwareMonitor")
+    Set objSWbemServices = objSWbemLocator.ConnectServer(strComputer, WMIRoot)
     Set colItems = objSWbemServices.ExecQuery("SELECT * FROM Sensor WHERE SensorType = 'Temperature'")
 
     thisSensorCount = colItems.Count

@@ -788,6 +788,7 @@ Public Sub readSettingsFile(ByVal Location As String, ByVal gblSettingsFile As S
         gblCurrentSensor = fGetINISetting(Location, "currentSensor", gblSettingsFile)
         gblTemperatureScale = fGetINISetting(Location, "temperatureScale", gblSettingsFile)
         gblMonitoringProgram = fGetINISetting(Location, "monitoringProgram", gblSettingsFile)
+        gblMonitoringProgramIndex = fGetINISetting(Location, "monitoringProgramIndex", gblSettingsFile)
        
         ' configuration
         gblGaugeTooltips = fGetINISetting(Location, "gaugeTooltips", gblSettingsFile)
@@ -905,6 +906,8 @@ Public Sub validateInputs()
         If gblCurrentSensor = vbNullString Then gblCurrentSensor = "0"
         If gblTemperatureScale = vbNullString Then gblTemperatureScale = "0"
         If gblMonitoringProgram = vbNullString Then gblMonitoringProgram = "C:\Program Files (x86)\OpenHardwareMonitor\OpenHardwareMonitor.exe"
+        If gblMonitoringProgramIndex = vbNullString Then gblMonitoringProgramIndex = "0"
+
         ' Configuration
         If gblGaugeTooltips = "False" Then gblGaugeTooltips = "0"
         If gblGaugeTooltips = vbNullString Then gblGaugeTooltips = "0"
