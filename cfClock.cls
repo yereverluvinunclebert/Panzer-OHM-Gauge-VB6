@@ -250,7 +250,7 @@ Private Sub gaugeForm_BubblingEvent(ByRef Sender As Object, ByRef EventName As S
                 If gblGaugeTooltips = "0" Then CreateToolTip gaugeForm.hWnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, gblWidgetName & " Help Button Help", , , , True
             Case Else    'gblSensorArray
-                If gblGaugeTooltips = "1" Then CreateToolTip gaugeForm.hWnd, "Sensor: " & gblSensorArray(overlayWidget.thisSensorNo, 1) & " (" & gblSensorArray(overlayWidget.thisSensorNo, 4) & ")" _
+                If gblGaugeTooltips = "0" Then CreateToolTip gaugeForm.hWnd, "Sensor: " & gblSensorArray(overlayWidget.thisSensorNo, 1) & " (" & gblSensorArray(overlayWidget.thisSensorNo, 4) & ")" _
                     & vbCrLf & "Current Temperature : " & gblSensorArray(overlayWidget.thisSensorNo, 2) & " C" _
                     & vbCrLf & "Maximum Temperature : " & gblSensorArray(overlayWidget.thisSensorNo, 3) & " C" _
                     & vbCrLf & "" _
