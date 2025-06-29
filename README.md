@@ -12,7 +12,7 @@ One of my VB6/RC6 PSD WoW 64 designs, a work largely complete but as with all so
  communities. The Panzer OHM Gauge widget is an attractive dieselpunk VB6 widget for your desktop. 
  Functional and gorgeous at the same time. The graphics are my own, I took original inspiration from a clock face by Italo Fortana combining it with an aircraft gauge. It is all my code with some help from the chaps at VBForums (credits given). 
   
-The Panzer OHM Gauge VB6 is a useful utility displaying the temperatures of all cores and components in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require. Requires installation of Open Hardware Monitor to allow the temperatures to be extracted and written to the WMI data repository. The Panzer OHM Gauge VB6 extracts the temperature data from that repository and displays it as a Panzer gauge on the desktop. 
+The Panzer OHM Gauge VB6 is a useful utility displaying the temperatures of all cores and components in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require. Requires installation of Open Hardware Monitor or Libre Hardware Monitor to allow the temperatures to be extracted and written to the WMI data repository. The Panzer OHM Gauge VB6 extracts the temperature data from that repository and displays it as a Panzer gauge on the desktop. 
 
 This is the pertinent bit:
 
@@ -34,8 +34,7 @@ In time there will also be coreTemp and Speedfan versions of the same VB6 widget
  fire up. The first time you run it there will be no assigned function and so it 
  will state as such and then pop up the preferences so that you can enter the 
  command of your choice. The widget takes command line-style commands for 
- windows. Mouse hover over the widget and press CTRL+mousewheel up/down to resize. It works well on Windows XP 
- to Windows 11.
+ windows. Mouse hover over the widget and press CTRL+mousewheel up/down to resize. It works well on Windows Vista/7 to Windows 11+.
  
 ![panzer-temperature-OHM-help](https://github.com/yereverluvinunclebert/Panzer-OHM-Gauge-VB6/assets/2788342/55c5a56f-2ba6-4dad-8649-d8a9314cc9d5)
  
