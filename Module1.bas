@@ -523,7 +523,7 @@ Private lstDevices(1, 25) As String
 Private lstDevicesListCount As Integer
 Public sAllDrives As String
 
-
+Private Declare Function QueryDosDevice Lib "kernel32" Alias "QueryDosDeviceA" (ByVal lpDeviceName As String, ByVal lpTargetPath As String, ByVal ucchMax As Long) As Long
 
 
 
@@ -2839,24 +2839,15 @@ Public Function IsRunning(ByRef NameProcess As String, ByRef processID As Long) 
     On Error GoTo IsRunning_Error
     'If debugflg = 1 Then debugLog "%IsRunning"
     
-    ' ignore a Windows binary that can persist
-    If InStr("RUNDLL32.exe", NameProcess) > 0 Then
-        IsRunning = False
-        Exit Function
-    End If
 
     If NameProcess <> vbNullString Then
             AppCount = 0
                      
-            If InStr(NameProcess, "::{") > 0 Then
-                IsRunning = False
-                Exit Function  ' the target is a CLSID so invalid
-            End If
-
             binaryName = getFileNameFromPath(NameProcess)
             'If binaryName = vbNullString Then Exit Function
             
-            folderName = getFolderNameFromPath(NameProcess) ' folder name of the binary in the stored process array
+            ' extract just folder name of the binary in the stored process array
+            folderName = getFolderNameFromPath(NameProcess)
             If binaryName = "" Then
                 IsRunning = False
                 Exit Function  ' the target is a folder so also invalid
@@ -2874,22 +2865,22 @@ Public Function IsRunning(ByRef NameProcess As String, ByRef processID As Long) 
                         AppCount = AppCount + 1
                         procId = uProcess.th32ProcessID
 
+                        ' extract the folder name of the running binary that appears to be a match, we do this for confirmation purposes
                         runningProcessFolder = getFolderNameFromPath(getExePathFromPID(procId))
                         
-                        ' some processes can only be interrogated when running with admin
+                        ' some processes can only be interrogated when running with admin, we assume they are good
                         If runningProcessFolder = vbNullString Then
                                 IsRunning = True
                                 processID = procId
                         Else
+                            ' if we have an extracted path then we need to compare it with our stored folder path name
                             If LCase$(runningProcessFolder) = LCase$(folderName) Then
                                 IsRunning = True
                                 processID = procId
                             Else
-                                'MsgBox runningProcessFolder & " " & binaryName
                                 IsRunning = False
                             End If
                         End If
-                        
                         
                         Exit Function
                 End If
@@ -2898,7 +2889,6 @@ Public Function IsRunning(ByRef NameProcess As String, ByRef processID As Long) 
             Loop While RProcessFound
             Call CloseHandle(hSnapshot)
     End If
-
 
    On Error GoTo 0
    Exit Function
@@ -2920,7 +2910,13 @@ Public Function getFolderNameFromPath(ByRef Path As String) As String
 
    On Error GoTo getFolderNameFromPath_Error
    'If debugflg = 1 Then debugLog "%" & "getFolderNameFromPath"
+   
+    ' test the process folder is being presented as a device string of the type \Device\HarddiskVolume7\
+    If InStr(Path, "\Device\HarddiskVolume") > 0 Then
+        Path = pvReplaceDevice(Path)
+    End If
 
+    ' extract the string prior to the final backslash
     If InStrRev(Path, "\") = 0 Then
         getFolderNameFromPath = vbNullString
         Exit Function
@@ -2935,7 +2931,41 @@ getFolderNameFromPath_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getFolderNameFromPath of Module Common"
 End Function
 
+'---------------------------------------------------------------------------------------
+' Procedure : pvReplaceDevice
+' Author    : wqweto  - https://stackoverflow.com/questions/11795347/convert-from-device-harddiskvolume1-to-c-in-vb6
+' Date      : 11/07/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Function pvReplaceDevice(sPath As String) As String
+    Dim sDrive          As String
+    Dim sDevice         As String
+    Dim lIdx            As Long
 
+   On Error GoTo pvReplaceDevice_Error
+
+    For lIdx = 0 To 25
+        sDrive = Chr$(65 + lIdx) & ":"
+        sDevice = Space(1000)
+        If QueryDosDevice(sDrive, sDevice, Len(sDevice)) <> 0 Then
+            sDevice = Left$(sDevice, InStr(sDevice, Chr$(0)) - 1)
+'            Debug.Print sDrive; "="; sDevice
+            If LCase$(Left$(sPath, Len(sDevice))) = LCase$(sDevice) Then
+                pvReplaceDevice = sDrive & Mid$(sPath, Len(sDevice) + 1)
+                Exit Function
+            End If
+        End If
+    Next
+    pvReplaceDevice = sPath
+
+   On Error GoTo 0
+   Exit Function
+
+pvReplaceDevice_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure pvReplaceDevice of Module Module1"
+End Function
 
 '
 '---------------------------------------------------------------------------------------
@@ -3078,3 +3108,84 @@ End Sub
 
 
 
+
+'
+'---------------------------------------------------------------------------------------
+' Procedure : checkMonitorRunningAtStartup
+' Author    : beededea
+' Date      : 11/07/2025
+' Purpose   : test open/libre hardware monitor is running
+'---------------------------------------------------------------------------------------
+'
+Public Sub checkMonitorRunningAtStartup()
+    Dim gblTemperatureMonitorState As Boolean: gblTemperatureMonitorState = False
+    Dim processID As Long: processID = 0
+    Dim answer As VbMsgBoxResult: answer = vbNo
+    Dim answerMsg As String: answerMsg = vbNullString
+    
+    On Error GoTo checkMonitorRunningAtStartup_Error
+    
+    If gblMonitoringProgram = vbNullString Then
+        answer = vbYes
+        answerMsg = "Monitoring program location is not present in the preferences, please ensure the monitoring program is installed, running and its correct location is entered."
+        answer = msgBoxA(answerMsg, vbYesNo, "Monitoring Software Location Missing", False)
+        Exit Sub
+    End If
+    
+    ' test the folder to see if the binary is present
+    If Not fFExists(gblMonitoringProgram) Then
+        answer = vbYes
+        answerMsg = "Monitoring program location is not present in the defined folder, " & gblMonitoringProgram & vbCrLf & " - please ensure the monitoring program is installed, running and its correct location is entered."
+        answer = msgBoxA(answerMsg, vbYesNo, "Monitoring Software Location Incorrect", False)
+        Exit Sub
+    End If
+
+    gblTemperatureMonitorState = IsRunning(gblMonitoringProgram, processID)
+    
+    ' tell the overlay to turn off the green lamp
+    overlayWidget.greenLampLit = gblTemperatureMonitorState
+    
+    If gblTemperatureMonitorState = False Then
+        answer = vbYes
+        answerMsg = "Monitoring program " & " is not running, temperatures will not be displayed."
+        answer = msgBoxA(answerMsg, vbYesNo, "Checking Monitoring Software Absent", False)
+    End If
+    
+   On Error GoTo 0
+   Exit Sub
+
+checkMonitorRunningAtStartup_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure checkMonitorRunningAtStartup of Module modMain"
+    
+End Sub
+
+'
+'---------------------------------------------------------------------------------------
+' Procedure : checkMonitorIsRunning
+' Author    : beededea
+' Date      : 11/07/2025
+' Purpose   : test open/libre hardware monitor is running
+'---------------------------------------------------------------------------------------
+'
+Public Sub checkMonitorIsRunning()
+    Dim gblTemperatureMonitorState As Boolean: gblTemperatureMonitorState = False
+    Dim processID As Long: processID = 0
+    
+    On Error GoTo checkMonitorIsRunning_Error
+    
+    If gblMonitoringProgram = vbNullString Then Exit Sub
+
+    gblTemperatureMonitorState = IsRunning(gblMonitoringProgram, processID)
+    
+    ' tell the overlay to turn off the green lamp
+    overlayWidget.greenLampLit = gblTemperatureMonitorState
+    
+   On Error GoTo 0
+   Exit Sub
+
+checkMonitorIsRunning_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure checkMonitorIsRunning of Module modMain"
+    
+End Sub

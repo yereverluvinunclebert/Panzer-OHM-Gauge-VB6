@@ -2225,7 +2225,7 @@ End Sub
 Private Sub btnSelectMonitor_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo btnSelectMonitor_MouseMove_Error
 
-    If gblPrefsTooltips = "0" Then CreateToolTip btnSelectMonitor.hWnd, "Select the location of your temperature-monitoring software. Enter the full folder path and program name: eg. C:\Program Files (x86)\OpenHardwareMonitor\OpenHardwareMonitor.exe. (You can use Libre version of OHM with the dedicated LHM widget).", _
+    If gblPrefsTooltips = "0" Then CreateToolTip btnSelectMonitor.hWnd, "Select the location of your temperature-monitoring software. Enter the full folder path and program name: eg. C:\Program Files (x86)\OpenHardwareMonitor\OpenHardwareMonitor.exe. (You can also use the Libre fork of OHM with this widget).", _
                   TTIconInfo, "Help on the Select Monitor button", , , , True
 
     On Error GoTo 0
@@ -5390,6 +5390,10 @@ End Sub
 
 
 
+Private Sub txtMonitoringProgram_Change()
+    btnSave.Enabled = True ' enable the save button
+End Sub
+
 Private Sub txtMonitoringProgram_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If gblPrefsTooltips = "0" Then CreateToolTip txtMonitoringProgram.hWnd, "This field displays the full path to the temperature monitoring software.", _
                   TTIconInfo, "Help on the monitoring software location", , , , True
@@ -6452,7 +6456,7 @@ Public Sub setPrefsTooltips()
         
         pCmbDebugBalloonTooltip = "Here you can set debug mode. This will enable the editor field and allow you to assign a VBP/TwinProj file for the " & gblCodingEnvironment & " IDE editor"
         
-        pCmbMonitoringProgramIndexBalloonToolTip = "Here you can choose from either one of the open source monitoring programs, OHM is a little out of date whilst LHM is currently being maintained."
+        pCmbMonitoringProgramIndexBalloonToolTip = "Here you can choose from either one of the open source monitoring programs, OHM is no longer supported and so is a little out of date whilst the LHM fork is supported software currently being maintained by a small team of devs."
         pCmbTickSwitchPrefBallonToolTip = "The movement of the pointer can be set to smooth or regular flicks, the smooth movement uses slightly more CPU especially when coupled with a short sampling interval."
         pCmbTemperatureScaleBallonToolTip = "Select the temperature scale you are used to, either Fahrenheit or Centigrade."
         pCmbCurrentSensorBallonToolTip = "Select the sensor you wish to monitor. The sensors shown here are extracted directly from the monitoring program for you to select the most appropriate."

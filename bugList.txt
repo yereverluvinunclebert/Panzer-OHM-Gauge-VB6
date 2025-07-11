@@ -82,6 +82,11 @@ TODO
 ' the same code to be added to the Wireless widget
 
 ' add vars for storing/reading and validating the full path to the OHM binary
+  same for LHM
+  
+' OHM and LHM control, startup &c, modifying the LHM/OHM configuration
+
+settings to JSON
 
 ' test usage of RC6 for monitor awareness - wip
 '      adjust Form Position on startup placing form onto Correct Monitor when placed off screen due to

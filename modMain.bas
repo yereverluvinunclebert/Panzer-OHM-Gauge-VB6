@@ -148,7 +148,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     Call makeVisibleFormElements
     
     ' test open hardware monitor is running
-    Call checkMonitorIsRunning
+    Call checkMonitorRunningAtStartup
     
     ' get the list of sensors and the count
     Call getgblSensorArray(gblSensorArray(), gblSensorCount)
@@ -186,8 +186,9 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     ' make the busy sand timer invisible
     Call hideBusyTimer
     
-    ' start the main gauge timer passing the desired status to a public property within the class
-    'overlayWidget.TmrGaugeTicking = True
+    ' start the main gauge timers
+    overlayWidget.Ticking = True
+    frmTimer.tmrCheckRunningProcess.Enabled = True
     
     ' end the startup by un-setting the start global flag
     gblStartupFlg = False
@@ -1464,8 +1465,3 @@ End Sub
 
 
 
-' test open hardware monitor is running
-Private Sub checkMonitorIsRunning()
-
-
-End Sub

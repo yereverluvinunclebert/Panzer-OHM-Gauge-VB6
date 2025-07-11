@@ -56,6 +56,7 @@ Private mThisSensorNo As Integer          ' property thisSensor
 Private mThisOpacity As String          ' property ThisOpacity
 Private mSamplingInterval As String     ' property SamplingInterval
 Private mThisFace As Integer             ' property mThisFace
+Private mGreenLampLit As Boolean
 
 
 
@@ -555,6 +556,50 @@ End Property
 
 
 
+
+
+'---------------------------------------------------------------------------------------
+' Property  : greenLampLit
+' Author    : beededea
+' Date      : 17/05/2023
+' Purpose   : property to determine (by value)  the set the greenLampLit value of the whole widget
+'---------------------------------------------------------------------------------------
+'
+Public Property Get greenLampLit() As Boolean
+   On Error GoTo greenLampLitGet_Error
+
+   greenLampLit = mGreenLampLit
+
+   On Error GoTo 0
+   Exit Property
+
+greenLampLitGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property greenLampLit of Class Module cwoverlay"
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property  : greenLampLit
+' Author    : beededea
+' Date      : 10/05/2023
+' Purpose   : property to determine (by value)  the set the greenLampLit value of the whole widget
+'---------------------------------------------------------------------------------------
+'
+Public Property Let greenLampLit(ByVal newValue As Boolean)
+   On Error GoTo greenLampLitLet_Error
+
+    If mGreenLampLit <> newValue Then mGreenLampLit = newValue Else Exit Property
+
+   On Error GoTo 0
+   Exit Property
+
+greenLampLitLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property greenLampLit of Class Module cwoverlay"
+End Property
+
+
+
 '---------------------------------------------------------------------------------------
 ' Property  : Hidden
 ' Author    : beededea
@@ -713,14 +758,14 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                       
                  Case "greenlamptrue"
                     
-                    If temperatureCurrent >= 80 Then
+                    If mGreenLampLit = True Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint Arr(2), Pat 'render the Pattern
                     End If
                     
                  Case "greenlampfalse"
                     
-                    If temperatureCurrent < 80 Then
+                    If mGreenLampLit = False Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
                         CC.Paint Arr(2), Pat ' render the Pattern
                     End If
@@ -867,8 +912,8 @@ Private Sub tmrSampler_Timer()
                 
             ' obtain the new temperature amount
             If mThisSensorNo <> "9999" Then
-                temperatureCurrent = OHM_Usage_Current
-                'temperatureMax = OHM_Usage_Max
+                temperatureCurrent = fTemperature_Current
+                'temperatureMax = fTemperature_Max
             Else
                 temperatureCurrent = 0
                 'temperatureMax = 0
@@ -940,8 +985,8 @@ Private Sub obtainTemperatures()
         Call getgblSensorArray(gblSensorArray(), gblSensorCount)
     
         If mThisSensorNo <> "9999" Then
-            temperatureCurrent = OHM_Usage_Current
-            temperatureMax = OHM_Usage_Max
+            temperatureCurrent = fTemperature_Current
+            temperatureMax = fTemperature_Max
         Else
             temperatureCurrent = 0
             temperatureMax = 0
@@ -961,7 +1006,7 @@ obtainTemperatures_Error:
 End Sub
 
 ' ----------------------------------------------------------------
-' Procedure Name: OHM_Usage_Current
+' Procedure Name: fTemperature_Current
 ' Purpose:
 ' Procedure Kind: Function
 ' Procedure Access: Private
@@ -969,26 +1014,26 @@ End Sub
 ' Author: https://www.tek-tips.com/userinfo.cfm?member=Hypetia
 ' Date: 09/01/2024
 ' ----------------------------------------------------------------
-Private Function OHM_Usage_Current() As Long
+Private Function fTemperature_Current() As Long
     Dim newT As Integer
-    On Error GoTo OHM_Usage_Current_Error
+    On Error GoTo fTemperature_Current_Error
     
     newT = Val(gblSensorArray(mThisSensorNo, 2))
 
-    OHM_Usage_Current = newT
+    fTemperature_Current = newT
      
     On Error GoTo 0
     Exit Function
 
-OHM_Usage_Current_Error:
+fTemperature_Current_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure OHM_Usage_Current, line " & Erl & "."
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fTemperature_Current, line " & Erl & "."
 
  
 End Function
 
 ' ----------------------------------------------------------------
-' Procedure Name: OHM_Usage_Max
+' Procedure Name: fTemperature_Max
 ' Purpose:
 ' Procedure Kind: Function
 ' Procedure Access: Private
@@ -996,16 +1041,16 @@ End Function
 ' Author:
 ' Date: 09/01/2024
 ' ----------------------------------------------------------------
-Private Function OHM_Usage_Max() As Double
+Private Function fTemperature_Max() As Double
 
-    OHM_Usage_Max = Val(gblSensorArray(mThisSensorNo, 3))
+    fTemperature_Max = Val(gblSensorArray(mThisSensorNo, 3))
     
     On Error GoTo 0
     Exit Function
 
-OHM_Usage_Max_Error:
+fTemperature_Max_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure OHM_Usage_Max, line " & Erl & "."
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fTemperature_Max, line " & Erl & "."
 
 End Function
 

@@ -11,6 +11,11 @@ Begin VB.Form frmTimer
    ScaleWidth      =   4680
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
+   Begin VB.Timer tmrCheckRunningProcess 
+      Interval        =   10000
+      Left            =   120
+      Top             =   2055
+   End
    Begin VB.Timer sleepTimer 
       Interval        =   3000
       Left            =   120
@@ -93,7 +98,7 @@ Option Explicit
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : revealWidgetTimer_Timer
+' Procedure : revealWidgetTimer_tmrCheckRunningProcess
 ' Author    : beededea
 ' Date      : 05/05/2023
 ' Purpose   : revealWidgetTimer for revealing after a hide.
@@ -102,7 +107,7 @@ Option Explicit
 Private Sub revealWidgetTimer_Timer()
     Static revealWidgetTimerCount As Integer
     
-    On Error GoTo revealWidgetTimer_Timer_Error
+    On Error GoTo revealWidgetTimer_tmrCheckRunningProcess_Error
 
     revealWidgetTimerCount = revealWidgetTimerCount + 1
     If revealWidgetTimerCount >= (gblMinutesToHide * 12) Then
@@ -117,11 +122,11 @@ Private Sub revealWidgetTimer_Timer()
     On Error GoTo 0
     Exit Sub
 
-revealWidgetTimer_Timer_Error:
+revealWidgetTimer_tmrCheckRunningProcess_Error:
 
     With Err
          If .Number <> 0 Then
-            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure revealWidgetTimer_Timer of Form frmTimer"
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure revealWidgetTimer_tmrCheckRunningProcess of Form frmTimer"
             Resume Next
           End If
     End With
@@ -130,8 +135,10 @@ End Sub
 
 
 
+
+
 '---------------------------------------------------------------------------------------
-' Procedure : tmrScreenResolution_Timer
+' Procedure : tmrScreenResolution_tmrCheckRunningProcess
 ' Author    : beededea
 ' Date      : 05/05/2023
 ' Purpose   : ScreenResolutionTimer for handling rotation of the screen
@@ -143,7 +150,7 @@ Private Sub tmrScreenResolution_Timer()
 
     Dim resizeProportion As Single: resizeProportion = 0
     
-    On Error GoTo tmrScreenResolution_Timer_Error
+    On Error GoTo tmrScreenResolution_tmrCheckRunningProcess_Error
 
     gblPhysicalScreenHeightPixels = GetDeviceCaps(Me.hDC, VERTRES)
     gblPhysicalScreenWidthPixels = GetDeviceCaps(Me.hDC, HORZRES)
@@ -168,11 +175,11 @@ Private Sub tmrScreenResolution_Timer()
     On Error GoTo 0
     Exit Sub
 
-tmrScreenResolution_Timer_Error:
+tmrScreenResolution_tmrCheckRunningProcess_Error:
 
     With Err
          If .Number <> 0 Then
-            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrScreenResolution_Timer of Form frmTimer"
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrScreenResolution_tmrCheckRunningProcess of Form frmTimer"
             Resume Next
           End If
     End With
@@ -181,7 +188,7 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : unhideTimer_Timer
+' Procedure : unhideTimer_tmrCheckRunningProcess
 ' Author    : beededea
 ' Date      : 13/05/2023
 ' Purpose   : if the unhide setting is set by another process it will unhide the widget
@@ -189,7 +196,7 @@ End Sub
 '
 Private Sub unhideTimer_Timer()
     
-    On Error GoTo unhideTimer_Timer_Error
+    On Error GoTo unhideTimer_tmrCheckRunningProcess_Error
 
     gblUnhide = fGetINISetting("Software\PzOHMGauge", "unhide", gblSettingsFile)
 
@@ -201,11 +208,11 @@ Private Sub unhideTimer_Timer()
     On Error GoTo 0
     Exit Sub
 
-unhideTimer_Timer_Error:
+unhideTimer_tmrCheckRunningProcess_Error:
 
     With Err
          If .Number <> 0 Then
-            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure unhideTimer_Timer of Form frmTimer"
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure unhideTimer_tmrCheckRunningProcess of Form frmTimer"
             Resume Next
           End If
     End With
@@ -214,7 +221,7 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : sleepTimer_Timer
+' Procedure : sleepTimer_tmrCheckRunningProcess
 ' Author    : beededea
 ' Date      : 21/04/2021
 ' Purpose   : timer that stores the last time the timer was run
@@ -228,7 +235,7 @@ Private Sub sleepTimer_Timer()
     
     Static strTimeThen As Date
     
-    On Error GoTo sleepTimer_Timer_Error
+    On Error GoTo sleepTimer_tmrCheckRunningProcess_Error
 
     If strTimeThen = "00:00:00" Then strTimeThen = Now(): Exit Sub
     sleepTimer.Enabled = False
@@ -267,8 +274,30 @@ Private Sub sleepTimer_Timer()
     On Error GoTo 0
     Exit Sub
 
-sleepTimer_Timer_Error:
+sleepTimer_tmrCheckRunningProcess_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sleepTimer_Timer of Form dock"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sleepTimer_tmrCheckRunningProcess of Form dock"
 
+End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : tmrCheckRunningProcess_Timer
+' Author    : beededea
+' Date      : 11/07/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub tmrCheckRunningProcess_Timer()
+
+   On Error GoTo tmrCheckRunningProcess_Timer_Error
+
+    Call checkMonitorIsRunning
+
+   On Error GoTo 0
+   Exit Sub
+
+tmrCheckRunningProcess_Timer_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrCheckRunningProcess_Timer of Form frmTimer"
 End Sub
