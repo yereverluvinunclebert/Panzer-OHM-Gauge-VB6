@@ -24,7 +24,7 @@ This is the pertinent bit:
     Set objSWbemServices = objSWbemLocator.ConnectServer(strComputer, "root\OpenHardwareMonitor")
     Set colItems = objSWbemServices.ExecQuery("SELECT * FROM Sensor WHERE SensorType = 'Temperature'")
 
-In time there will also be coreTemp and Speedfan versions of the same VB6 widget - watch this space!
+In time there will also be coreTemp upgrade soon - watch this space!
  
 ![panzer-OHMphoto-1440x900](https://github.com/yereverluvinunclebert/Panzer-OHM-Gauge-VB6/assets/2788342/f44dea4e-ed05-44a4-8516-3c06eaa01068)
 
@@ -42,7 +42,7 @@ In time there will also be coreTemp and Speedfan versions of the same VB6 widget
  
 ![panzer-temperature-OHM-help](https://github.com/yereverluvinunclebert/Panzer-OHM-Gauge-VB6/assets/2788342/55c5a56f-2ba6-4dad-8649-d8a9314cc9d5)
  
- The Panzer CPU Gauge VB6 gauge is Beta-grade software, under development, not yet 
+ The Panzer OHM Gauge VB6 gauge is Beta-grade software, under development, not yet 
  ready to use on a production system - use at your own risk.
 
  This version was developed on Windows 7 using 32 bit VisualBasic 6 as a FOSS 
@@ -151,9 +151,9 @@ In time there will also be coreTemp and Speedfan versions of the same VB6 widget
  referenced using modRC6regfree.bas which is compiled into the binary.	
  
  
- Requires a PzCPU Gauge folder in C:\Users\<user>\AppData\Roaming\ 
- eg: C:\Users\<user>\AppData\Roaming\PzCPU Gauge
- Requires a settings.ini file to exist in C:\Users\<user>\AppData\Roaming\PzCPU Gauge
+ Requires a PzOHM Gauge folder in C:\Users\<user>\AppData\Roaming\ 
+ eg: C:\Users\<user>\AppData\Roaming\PzOHM Gauge
+ Requires a settings.ini file to exist in C:\Users\<user>\AppData\Roaming\PzOHM Gauge
  The above will be created automatically by the compiled program when run for the 
  first time.
  
@@ -189,7 +189,7 @@ Sample preference screen showing CCR slider in place and operating
  * SETUP.EXE - The program is currently distributed using setup2go, a very useful 
  and comprehensive installer program that builds a .exe installer. Youll have to 
  find a copy of setup2go on the web as it is now abandonware. Contact me
- directly for a copy. The file "install PzCPU Gauge 0.1.0.s2g" is the configuration 
+ directly for a copy. The file "install PzOHM Gauge 0.1.0.s2g" is the configuration 
  file for setup2go. When you build it will report any errors in the build.
  
  * HELP.CHM - the program documentation is built using the NVU HTML editor and 
