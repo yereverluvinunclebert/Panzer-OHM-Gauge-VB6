@@ -2,6 +2,8 @@
  
 A FOSS Temperature Gauge VB6 WoW64 Widget for Windows Vista, 7, 8 and 10/11+. The Panzer OHM Gauge VB6 is a useful utility displaying the temperatures of all cores and components in a dieselpunk fashion on your desktop. There will also be a version later for Reactos and XP, watch this space for the link. Also tested and running well on Linux and Mac os/X using Wine.
 
+![security](https://github.com/yereverluvinunclebert/Panzer-OHM-Gauge-VB6/assets/2788342/3fc22b45-ca08-4c2b-98f1-8cce6e4003c6)
+
 One of my VB6/RC6 PSD WoW 64 designs, a work largely complete but as with all software some tasks to complete and unfound bugs to repair. However, it works fully, there is an installer and it does the job. New version always coming.  This VB6 widget is based upon the Yahoo/Konfabulator and Xwidgets of the same design. Those older widget platforms are now obsolete so I have migrated the code to a new development environment. Each exists now as a Windows binary rather than a widget requiring a runtime. 
 
 Download it here: https://github.com/yereverluvinunclebert/Panzer-OHM-Gauge-VB6/releases/tag/0.1.192beta
