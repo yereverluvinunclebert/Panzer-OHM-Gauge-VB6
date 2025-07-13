@@ -3133,7 +3133,7 @@ Public Sub checkMonitorRunningAtStartup()
         Exit Sub
     End If
     
-    ' test the folder to see if the binary is present
+    ' test the folder to see if what has been entered in the binary field is present
     If Not fFExists(gblMonitoringProgram) Then
         answer = vbYes
         answerMsg = "Monitoring program location is not present in the defined folder, " & gblMonitoringProgram & vbCrLf & " - please ensure the monitoring program is installed, running and its correct location is entered."
@@ -3148,8 +3148,9 @@ Public Sub checkMonitorRunningAtStartup()
     
     If gblTemperatureMonitorState = False Then
         answer = vbYes
-        answerMsg = "Monitoring program " & " is not running, temperatures will not be displayed."
-        answer = msgBoxA(answerMsg, vbYesNo, "Checking Monitoring Software Absent", False)
+        answerMsg = "Monitoring program " & " is not running, temperatures will not be displayed. Would you like me to run it for you?"
+        answer = msgBoxA(answerMsg, vbYesNo, "Running Monitoring Software", False)
+        If answer = vbYes Then Call ShellExecute(menuForm.hWnd, "Open", gblMonitoringProgram, vbNullString, App.Path, 1)
     End If
     
    On Error GoTo 0

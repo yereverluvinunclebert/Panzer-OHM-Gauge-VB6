@@ -46,22 +46,16 @@ DONE
 ' libre hardware monitor
 ' add vars for storing/reading and validating the full path to the OHM binary
   same for LHM
-
+' OHM and LHM control, startup &c, modifying the LHM/OHM configuration
+' add timer to run regulalrly and check the status of the OHM s/w
+' links to various locations
+' github repo. update
 
 ' -oOo-
 
 TODO
 
-add timer to run regulalrly and check the status of the OHM s/w
-
-' links to various locations
-' github repo. update
-' icons 48x48
-
-' OHM and LHM control, startup &c, modifying the LHM/OHM configuration
-
-
-' add a kelvin face
+' add a kelvin face?
 
 ' when new gauge spawned using menu option
 ' check if there is a spawn_n already extant
@@ -88,9 +82,6 @@ add timer to run regulalrly and check the status of the OHM s/w
 
 ' the same code to be added to the Network widget
 ' the same code to be added to the Wireless widget
-
-  
-
 
 settings to JSON
 

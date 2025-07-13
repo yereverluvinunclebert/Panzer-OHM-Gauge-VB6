@@ -266,7 +266,7 @@ Private Sub gaugeForm_BubblingEvent(ByRef Sender As Object, ByRef EventName As S
                         bigTooltip = "*" & monitoringProgram & " process is NOT running*" & vbCrLf
                     End If
     
-                    bigTooltip = bigTooltip & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize."
+                    bigTooltip = bigTooltip & vbCrLf & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize."
                         
                     CreateToolTip gaugeForm.hWnd, bigTooltip, TTIconInfo, gblWidgetName & " Information.", , , , True
                 End If
@@ -744,7 +744,7 @@ End Sub
 '                alter the size of the form to correspond to the monitor
 '---------------------------------------------------------------------------------------
 '
-Private Sub gaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
+Private Sub gaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
 
     On Error GoTo gaugeForm_MouseUp_Error
     
@@ -779,8 +779,8 @@ End Sub
 ' Purpose   : move the whole form on a mousDown and drag
 '---------------------------------------------------------------------------------------
 '
-Private Sub gaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
-  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = y 'just store the offsets when no button is down
+Private Sub gaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = X: y0 = Y 'just store the offsets when no button is down
   
    On Error GoTo gaugeForm_MouseMove_Error
     
@@ -793,8 +793,8 @@ Private Sub gaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer,
 
     If Button = vbLeftButton And Not gaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
-      FX = (x - x0) * gaugeForm.WidgetRoot.Zoom + gaugeForm.Left
-      FY = (y - y0) * gaugeForm.WidgetRoot.Zoom + gaugeForm.Top
+      FX = (X - x0) * gaugeForm.WidgetRoot.Zoom + gaugeForm.Left
+      FY = (Y - y0) * gaugeForm.WidgetRoot.Zoom + gaugeForm.Top
       gaugeForm.Move FX, FY
       
       Debug.Print "FX " & FX
@@ -888,7 +888,7 @@ End Sub
 ' Purpose   : A click on the gauge form, test screen resolution and handle right mouse click for the menu
 '---------------------------------------------------------------------------------------
 '
-Private Sub gaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
+Private Sub gaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
    On Error GoTo gaugeForm_MouseDown_Error
 
     'essential code to test for monitor resolution before and after a mouse-down pick up and drag to another monitor
