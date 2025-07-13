@@ -43,15 +43,23 @@ DONE
 ' about.txt updated
 ' menus and naming
 
+' libre hardware monitor
+' add vars for storing/reading and validating the full path to the OHM binary
+  same for LHM
+
 
 ' -oOo-
 
 TODO
 
+add timer to run regulalrly and check the status of the OHM s/w
+
 ' links to various locations
 ' github repo. update
 ' icons 48x48
-' libre hardware monitor
+
+' OHM and LHM control, startup &c, modifying the LHM/OHM configuration
+
 
 ' add a kelvin face
 
@@ -81,10 +89,8 @@ TODO
 ' the same code to be added to the Network widget
 ' the same code to be added to the Wireless widget
 
-' add vars for storing/reading and validating the full path to the OHM binary
-  same for LHM
   
-' OHM and LHM control, startup &c, modifying the LHM/OHM configuration
+
 
 settings to JSON
 

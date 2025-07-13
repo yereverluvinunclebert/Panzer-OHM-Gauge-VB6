@@ -526,7 +526,7 @@ Public sAllDrives As String
 Private Declare Function QueryDosDevice Lib "kernel32" Alias "QueryDosDeviceA" (ByVal lpDeviceName As String, ByVal lpTargetPath As String, ByVal ucchMax As Long) As Long
 
 
-
+Public gblTemperatureMonitorState As Boolean
 '------------------------------------------------------ ENDS
 
 
@@ -3118,7 +3118,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub checkMonitorRunningAtStartup()
-    Dim gblTemperatureMonitorState As Boolean: gblTemperatureMonitorState = False
+    'Dim gblTemperatureMonitorState As Boolean: gblTemperatureMonitorState = False
     Dim processID As Long: processID = 0
     Dim answer As VbMsgBoxResult: answer = vbNo
     Dim answerMsg As String: answerMsg = vbNullString
@@ -3169,7 +3169,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub checkMonitorIsRunning()
-    Dim gblTemperatureMonitorState As Boolean: gblTemperatureMonitorState = False
+ '   Dim gblTemperatureMonitorState As Boolean: gblTemperatureMonitorState = False
     Dim processID As Long: processID = 0
     
     On Error GoTo checkMonitorIsRunning_Error
