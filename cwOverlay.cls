@@ -409,7 +409,7 @@ Public Property Let thisSensorNo(ByVal newValue As Integer)
     On Error GoTo thisSensorNoLet_Error
 
     If mThisSensorNo <> newValue Then mThisSensorNo = newValue Else Exit Property
-            
+                
     'given a Sensor number select the Sensor string
     If mThisSensorNo < gblSensorCount Then
         mThisSensor = gblSensorArray(mThisSensorNo, 1)
@@ -904,12 +904,17 @@ Private Sub tmrSampler_Timer()
             ' oldSDeg stored
             oldSDeg = SDeg
             
-            ' test for empty array or zero sensor count to handle (Error -2147217358 (Call cancelled ) in procedure getGblSensorArray, line 0)
-            If UBound(gblSensorArray) < LBound(gblSensorArray) Or gblSensorCount = 0 Then Exit Sub
+            If gblTemperatureMonitorState = False Then Exit Sub
             
+            ' test for empty array or zero sensor count to handle (Error -2147217358 (Call cancelled ) in procedure getGblSensorArray, line 0)
+            If UBound(gblSensorArray) < LBound(gblSensorArray) Or gblSensorCount = 0 Then
+                'MsgBox "ah!"
+                Exit Sub
+            End If
+                                        
             ' get the list of sensors and the count
             Call getgblSensorArray(gblSensorArray(), gblSensorCount)
-                
+            
             ' obtain the new temperature amount
             If mThisSensorNo <> "9999" Then
                 temperatureCurrent = fTemperature_Current
@@ -977,13 +982,15 @@ End Sub
 ' ----------------------------------------------------------------
 Private Sub obtainTemperatures()
     On Error GoTo obtainTemperatures_Error
-        
+    
+        If gblTemperatureMonitorState = False Then Exit Sub
+    
         ' test for empty array or zero sensor count to handle (Error -2147217358 (Call cancelled ) in procedure getGblSensorArray, line 0)
         If UBound(gblSensorArray) < LBound(gblSensorArray) Or gblSensorCount = 0 Then Exit Sub
-        
+    
         ' get the list of sensors and the count
         Call getgblSensorArray(gblSensorArray(), gblSensorCount)
-    
+        
         If mThisSensorNo <> "9999" Then
             temperatureCurrent = fTemperature_Current
             temperatureMax = fTemperature_Max

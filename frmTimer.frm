@@ -12,6 +12,7 @@ Begin VB.Form frmTimer
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
    Begin VB.Timer tmrCheckRunningProcess 
+      Enabled         =   0   'False
       Interval        =   10000
       Left            =   120
       Top             =   2055

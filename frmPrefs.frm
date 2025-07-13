@@ -4568,7 +4568,7 @@ Private Sub adjustPrefsControls(Optional ByVal restartState As Boolean)
     cmbTickSwitchPref.ListIndex = Val(gblPointerAnimate)
     
     ' prefs combo matches stored current Sensor
-    cmbCurrentSensor.ListIndex = Val(gblCurrentSensor)
+    If gblTemperatureMonitorState = True Then cmbCurrentSensor.ListIndex = Val(gblCurrentSensor)
 
     cmbMonitoringProgramIndex.ListIndex = Val(gblMonitoringProgramIndex)
     txtMonitoringProgram.Text = gblMonitoringProgram
@@ -4817,13 +4817,15 @@ Private Sub populatePrefsComboBoxes()
     cmbTickSwitchPref.AddItem "Smooth", 1
     cmbTickSwitchPref.ItemData(1) = 1
     
-    For I = 0 To (gblSensorCount - 1)
-        If gblSensorArray(I, 4) = "" Then Exit For
-        cmbCurrentSensor.AddItem "Sensor " & (I + 1) & " " & gblSensorArray(I, 1) & " " & gblSensorArray(I, 4), I
-        cmbCurrentSensor.ItemData(I) = I
-    Next I
-    cmbCurrentSensor.AddItem "none", I
-    cmbCurrentSensor.ItemData(I) = 9999
+    If gblTemperatureMonitorState = True Then
+        For I = 0 To (gblSensorCount - 1)
+            If gblSensorArray(I, 4) = "" Then Exit For
+            cmbCurrentSensor.AddItem "Sensor " & (I + 1) & " " & gblSensorArray(I, 1) & " " & gblSensorArray(I, 4), I
+            cmbCurrentSensor.ItemData(I) = I
+        Next I
+        cmbCurrentSensor.AddItem "none", I
+        cmbCurrentSensor.ItemData(I) = 9999
+    End If
     
     cmbTemperatureScale.AddItem "centigrade", 0
     cmbTemperatureScale.ItemData(0) = 0

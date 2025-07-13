@@ -2779,6 +2779,8 @@ Public Sub getgblSensorArray(ByRef thisArray() As String, ByRef gblSensorCount A
     
     On Error GoTo getGblSensorArray_Error
     
+    If gblTemperatureMonitorState = False Then Exit Sub
+    
     strComputer = "."  ' localhost
     
     If gblMonitoringProgramIndex = "0" Then
@@ -3118,7 +3120,6 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub checkMonitorRunningAtStartup()
-    'Dim gblTemperatureMonitorState As Boolean: gblTemperatureMonitorState = False
     Dim processID As Long: processID = 0
     Dim answer As VbMsgBoxResult: answer = vbNo
     Dim answerMsg As String: answerMsg = vbNullString
@@ -3169,17 +3170,26 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub checkMonitorIsRunning()
- '   Dim gblTemperatureMonitorState As Boolean: gblTemperatureMonitorState = False
     Dim processID As Long: processID = 0
+    Static wasRunning As Boolean
     
     On Error GoTo checkMonitorIsRunning_Error
     
+    gblTemperatureMonitorState = False
     If gblMonitoringProgram = vbNullString Then Exit Sub
 
     gblTemperatureMonitorState = IsRunning(gblMonitoringProgram, processID)
     
-    ' tell the overlay to turn off the green lamp
+    ' this tests as to whether the monitor program has been stopped and restarted
+    If gblTemperatureMonitorState = True And wasRunning = False Then
+        ' if so, then re-get the list of sensors and the count
+        Call getgblSensorArray(gblSensorArray(), gblSensorCount)
+    End If
+    wasRunning = gblTemperatureMonitorState
+    
+    ' tell the overlay to turn on/off the green lamp
     overlayWidget.greenLampLit = gblTemperatureMonitorState
+    fGauge.gaugeForm.Refresh
     
    On Error GoTo 0
    Exit Sub

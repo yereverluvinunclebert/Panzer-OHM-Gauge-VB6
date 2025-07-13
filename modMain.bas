@@ -89,7 +89,6 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     ' initialise global vars
     Call initialiseGlobalVars
     
-    ' = "none"
     gblStartupFlg = True
     gblWidgetName = "Panzer OHM Gauge"
     thisPSDFullPath = App.Path & "\Res\Panzer OHM gauge VB6.psd"
