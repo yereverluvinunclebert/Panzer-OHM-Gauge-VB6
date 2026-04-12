@@ -73,7 +73,9 @@ In time there will also be coreTemp upgrade soon - watch this space!
  Built using: VB6, MZ-TOOLS 3.0, VBAdvance, CodeHelp Core IDE Extender
  Framework 2.2 & Rubberduck 2.4.1, RichClient 6
  
- Links:
+ **Links:**
+
+  External links are provided for reference only. Please verify sources before downloading any third-party software.
  
 	https://www.vbrichclient.com/#/en/About/
 	MZ-TOOLS https://www.mztools.com/  
@@ -186,17 +188,17 @@ The above rigmarole is only for development. For ordinary users during runtime, 
 
 Sample preference screen showing CCR slider in place and operating
 
+
  * SETUP.EXE - The program is currently distributed using setup2go, a very useful 
  and comprehensive installer program that builds a .exe installer. Youll have to 
- find a copy of setup2go on the web as it is now abandonware. Contact me
- directly for a copy. The file "install PzOHM Gauge 0.1.0.s2g" is the configuration 
- file for setup2go. When you build it will report any errors in the build.
+ find a copy of setup2go on the web as it is now abandonware. Setup2Go is no longer 
+ maintained. Users should ensure they obtain and use it in accordance with its original licensing terms.
  
  * HELP.CHM - the program documentation is built using the NVU HTML editor and 
  compiled using the Microsoft supplied CHM builder tools (HTMLHelp Workshop) and 
  the HTM2CHM tool from Yaroslav Kirillov. Both are abandonware but still do
  the job admirably. The HTML files exist alongside the compiled CHM file in the 
- HELP folder.
+ HELP folder. Users should ensure they obtain and use this tool in accordance with its original licensing terms.
  
   Project References:
 
@@ -215,12 +217,17 @@ Sample preference screen showing CCR slider in place and operating
  
  Copyright © 2023 Dean Beedell
  
- In addition to the GNU General Public Licence please be aware that you may use 
- any of my own imagery in your own creations but commercially only with my 
- permission. In all other non-commercial cases I require a credit to the 
- original artist using my name or one of my pseudonyms and a link to my site. 
- With regard to the commercial use of incorporated images, permission and a 
- licence would need to be obtained from the original owner and creator, ie. me.
+Code: GNU GPL vX
+
+Artwork/Images: © Dean Beedell – separate license applies
+
+Please be aware that you may use
+any of my own imagery in your own creations but commercially only with my
+permission. In all other non-commercial cases I require a credit to the
+original artist using my name or one of my pseudonyms and a link to my site.
+With regard to the commercial use of incorporated images, permission and a
+licence would need to be obtained from the original owner and creator, ie. me.
+ 
  
 ![about](https://github.com/yereverluvinunclebert/Panzer-OHM-Gauge-VB6/assets/2788342/e48a2165-efa1-44ae-a75a-46801ea461ab)
 
